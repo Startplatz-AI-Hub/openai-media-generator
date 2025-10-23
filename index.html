@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI Media Generator | STARTPLATZ AI HUB</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           STARTPLATZ AI HUB - OpenAI Media Generator
+           ========================================== */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Primärfarben */
+            --color-primary-lila: #9836FF;
+            --color-primary-teal: #005B63;
+            
+            /* Sekundärfarben */
+            --color-new-blue: #00B5B6;
+            --color-accent-mint: #BAF6E2;
+            --color-accent-green: #83BA16;
+            --color-accent-yellow: #FFCC33;
+            
+            /* Neutrale Farben */
+            --color-white: #FFFFFF;
+            --color-black: #000000;
+            --color-gray-light: #F5F5F5;
+            --color-gray-medium: #E0E0E0;
+            --color-gray-dark: #333333;
+            
+            /* Gradient Backgrounds */
+            --gradient-primary: linear-gradient(135deg, #9836FF 0%, #B366FF 100%);
+            --gradient-teal: linear-gradient(135deg, #005B63 0%, #00B5B6 100%);
+            
+            /* Semantic Colors */
+            --color-success: #2E7D32;
+            --color-info: #1976D2;
+            --color-warning: #E6B82E;
+            --color-danger: #D32F2F;
+            
+            /* Typography */
+            --font-primary: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            
+            /* Font Sizes */
+            --text-xs: 12px;
+            --text-sm: 14px;
+            --text-base: 16px;
+            --text-lg: 18px;
+            --text-xl: 20px;
+            --text-2xl: 24px;
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 9999px;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+            line-height: 1.6;
+            color: var(--color-gray-dark);
+            background: linear-gradient(135deg, 
+                rgba(152, 54, 255, 0.03) 0%,
+                rgba(186, 246, 226, 0.05) 50%,
+                rgba(0, 91, 99, 0.02) 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: linear-gradient(180deg,
+                rgba(255, 255, 255, 0.98) 0%,
+                rgba(255, 255, 255, 0.95) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 
+                0 1px 0 rgba(0, 0, 0, 0.05),
+                0 4px 12px rgba(0, 0, 0, 0.03);
+            padding: var(--space-md) 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+            filter: brightness(1) contrast(1.1);
+            transition: all 0.3s ease;
+        }
+
+        .logo-link:hover .logo-img {
+            transform: scale(1.05);
+            filter: brightness(1.1) contrast(1.2);
+        }
+
+        .nav-title {
+            font-family: var(--font-primary);
+            font-weight: 600;
+            font-size: var(--text-lg);
+            color: var(--color-gray-dark);
+            margin-left: var(--space-lg);
+        }
+
+        /* Container & Layout */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-lg);
+        }
+
+        .section-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        /* Typography */
+        h1, h2 {
+            font-family: var(--font-primary);
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--color-black);
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: var(--space-lg);
+            background: linear-gradient(180deg,
+                var(--color-black) 0%,
+                rgba(0, 0, 0, 0.8) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 3vw, 1.75rem);
+            margin-bottom: var(--space-md);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg,
+                var(--color-primary-lila) 0%,
+                transparent 100%);
+            border-radius: 2px;
+        }
+
+        h4 {
+            font-family: var(--font-primary);
+            font-size: var(--text-lg);
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        p {
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+            line-height: 1.7;
+            color: rgba(0, 0, 0, 0.75);
+            margin-bottom: var(--space-md);
+        }
+
+        code {
+            font-family: var(--font-code);
+            font-weight: 300;
+            font-size: var(--text-sm);
+            background: linear-gradient(135deg,
+                rgba(152, 54, 255, 0.05) 0%,
+                rgba(186, 246, 226, 0.08) 100%);
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(152, 54, 255, 0.1);
+            color: var(--color-primary-lila);
+        }
+
+        /* Cards */
+        .card {
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(250, 250, 252, 1) 100%);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-xl);
+            box-shadow: 
+                0 1px 3px rgba(0, 0, 0, 0.04),
+                0 4px 12px rgba(0, 0, 0, 0.05),
+                0 8px 24px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 2px 6px rgba(0, 0, 0, 0.06),
+                0 8px 20px rgba(0, 0, 0, 0.08),
+                0 16px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-accent {
+            background: var(--color-accent-mint);
+            border-left: 6px solid var(--color-accent-green);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            box-shadow: 
+                0 4px 16px rgba(0, 91, 99, 0.1),
+                0 8px 32px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Buttons */
+        button, .btn {
+            font-family: var(--font-primary);
+            font-weight: 600;
+            font-size: var(--text-base);
+            padding: 14px 32px;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        button.primary, .btn-primary {
+            background: linear-gradient(135deg, 
+                var(--color-primary-teal) 0%, 
+                #004952 100%);
+            color: var(--color-white);
+            box-shadow: 
+                0 2px 4px rgba(0, 91, 99, 0.2),
+                0 4px 8px rgba(0, 91, 99, 0.1);
+        }
+
+        button.primary:hover:not(:disabled), .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 4px 8px rgba(0, 91, 99, 0.3),
+                0 8px 16px rgba(0, 91, 99, 0.2);
+        }
+
+        button.secondary, .btn-secondary {
+            background: linear-gradient(135deg, #EEF2F7 0%, #E6EAF0 100%);
+            color: #1F2937;
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+        }
+
+        button.secondary:hover:not(:disabled), .btn-secondary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        button.danger, .btn-danger {
+            background: linear-gradient(135deg, 
+                var(--color-danger) 0%, 
+                #B71C1C 100%);
+            color: var(--color-white);
+            box-shadow: 
+                0 2px 4px rgba(211, 47, 47, 0.2),
+                0 4px 8px rgba(211, 47, 47, 0.1);
+        }
+
+        button.danger:hover:not(:disabled), .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 4px 8px rgba(211, 47, 47, 0.3),
+                0 8px 16px rgba(211, 47, 47, 0.2);
+        }
+
+        button:disabled, .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        button:active:not(:disabled), .btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            margin-top: var(--space-md);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        label {
+            display: block;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: var(--text-sm);
+            color: rgba(0, 0, 0, 0.7);
+            margin-bottom: var(--space-sm);
+            letter-spacing: 0.02em;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            font-family: var(--font-body);
+            font-size: var(--text-base);
+            border: 2px solid transparent;
+            background: linear-gradient(var(--color-white), var(--color-white)) padding-box,
+                        linear-gradient(135deg, rgba(0, 91, 99, 0.2), rgba(152, 54, 255, 0.2)) border-box;
+            border-radius: var(--radius-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        input:hover,
+        textarea:hover,
+        select:hover {
+            background: linear-gradient(var(--color-white), var(--color-white)) padding-box,
+                        linear-gradient(135deg, rgba(0, 91, 99, 0.3), rgba(152, 54, 255, 0.3)) border-box;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            background: linear-gradient(var(--color-white), var(--color-white)) padding-box,
+                        linear-gradient(135deg, var(--color-primary-teal), var(--color-primary-lila)) border-box;
+            box-shadow: 
+                0 0 0 4px rgba(152, 54, 255, 0.08),
+                0 4px 12px rgba(152, 54, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239836FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 20px;
+            padding-right: 48px;
+        }
+
+        input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: var(--space-sm);
+            cursor: pointer;
+            appearance: none;
+            border: 2px solid rgba(0, 91, 99, 0.3);
+            border-radius: var(--radius-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, var(--color-primary-lila) 0%, #B366FF 100%);
+            border-color: var(--color-primary-lila);
+        }
+
+        input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: translate(-50%, -60%) rotate(45deg);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: var(--space-md);
+            margin-bottom: var(--space-lg);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            font-size: var(--text-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+
+        .alert-warning {
+            background: rgba(255, 204, 51, 0.15);
+            color: #7a6400;
+            border: 1px solid rgba(255, 204, 51, 0.3);
+        }
+
+        .alert-success {
+            background: rgba(46, 125, 50, 0.12);
+            color: var(--color-success);
+            border: 1px solid rgba(46, 125, 50, 0.2);
+        }
+
+        .alert-danger {
+            background: rgba(211, 47, 47, 0.12);
+            color: var(--color-danger);
+            border: 1px solid rgba(211, 47, 47, 0.2);
+        }
+
+        .alert strong {
+            font-weight: 600;
+        }
+
+        /* Log Area */
+        .log-area {
+            background: linear-gradient(135deg,
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(0, 0, 0, 1) 100%);
+            color: #e9ecef;
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            height: 300px;
+            overflow-y: auto;
+            font-family: var(--font-code);
+            font-size: var(--text-sm);
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Result Container */
+        .result-container {
+            margin-top: var(--space-lg);
+            padding: var(--space-lg);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            min-height: 100px;
+        }
+
+        .result-container img,
+        .result-container video {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: var(--space-md);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* History Items */
+        .history-item {
+            padding: var(--space-sm) var(--space-md);
+            margin-bottom: var(--space-sm);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(250, 250, 252, 1) 100%);
+            cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-size: var(--text-sm);
+        }
+
+        .history-item:hover {
+            background: linear-gradient(135deg,
+                rgba(152, 54, 255, 0.05) 0%,
+                rgba(186, 246, 226, 0.08) 100%);
+            border-color: var(--color-primary-lila);
+            transform: translateX(4px);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 12px;
+            background: var(--color-gray-light);
+            border-radius: var(--radius-full);
+            margin-top: var(--space-md);
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-full);
+            text-align: center;
+            color: white;
+            line-height: 12px;
+            font-size: var(--text-xs);
+            font-weight: 600;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+        }
+
+        /* Details/Summary */
+        details {
+            margin-top: var(--space-md);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            padding: var(--space-md);
+            background: var(--color-gray-light);
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        summary:hover {
+            background: rgba(152, 54, 255, 0.05);
+            color: var(--color-primary-lila);
+        }
+
+        details[open] summary {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        details > div {
+            padding: var(--space-md);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section-group {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar-container {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+
+            .nav-title {
+                margin-left: 0;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .card {
+                padding: var(--space-lg);
+            }
+
+            button, .btn {
+                padding: 12px 24px;
+                font-size: var(--text-sm);
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--color-gray-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg,
+                var(--color-primary-teal) 0%,
+                var(--color-primary-lila) 100%);
+            border-radius: var(--radius-full);
+            border: 2px solid var(--color-gray-light);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg,
+                var(--color-primary-lila) 0%,
+                var(--color-primary-teal) 100%);
+        }
+
+        /* Focus Visible */
+        *:focus-visible {
+            outline: 2px solid var(--color-primary-lila);
+            outline-offset: 4px;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Selection Color */
+        ::selection {
+            background: rgba(152, 54, 255, 0.2);
+            color: var(--color-black);
+        }
+
+        /* Video ID Container */
+        .video-id-container {
+            margin-bottom: var(--space-md);
+            padding: var(--space-md);
+            background: linear-gradient(135deg,
+                rgba(152, 54, 255, 0.05) 0%,
+                rgba(186, 246, 226, 0.08) 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            border: 1px solid rgba(152, 54, 255, 0.1);
+        }
+
+        .video-id-container code {
+            flex: 1;
+            background: var(--color-white);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-code);
+        }
+
+        /* Image Container */
+        .image-container {
+            margin-bottom: var(--space-lg);
+            padding: var(--space-md);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(250, 250, 252, 1) 100%);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
+
+        .image-container a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo-link">
+                <img src="https://res.cloudinary.com/startplatz/image/upload/v1709845467/ai-hub/AI-Hub-Logo.png" 
+                     alt="STARTPLATZ AI HUB" 
+                     class="logo-img">
+            </a>
+            <div class="nav-title">OpenAI Media Generator</div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>🎨 OpenAI Media Generator</h1>
+        <p style="font-size: var(--text-lg); color: rgba(0, 0, 0, 0.7); margin-bottom: var(--space-xl);">
+            Generiere KI-Bilder mit <code>gpt-image-1</code> und KI-Videos mit <code>sora-2</code> / <code>sora-2-pro</code>. 
+            Professionelle Tools für kreative AI-Projekte.
+        </p>
+
+        <!-- API-Key Section -->
+        <div class="card-accent" style="margin-bottom: var(--space-xl);">
+            <h2>🔑 API Konfiguration</h2>
+            <div class="alert alert-warning" role="alert">
+                <span>ℹ️</span>
+                <div>
+                    <strong>Bring Your Own Key (BYOK):</strong> Diese Anwendung nutzt <strong>deinen eigenen</strong> OpenAI API Key. 
+                    Der Key wird nur für deine Requests verwendet und nicht gespeichert oder weitergegeben. 
+                    Erhalte deinen Key auf <a href="https://platform.openai.com/api-keys" target="_blank" style="color: inherit; text-decoration: underline;">platform.openai.com</a>.
+                </div>
+            </div>
+            
+            <div class="alert alert-warning" role="alert" style="margin-top: var(--space-md); background: rgba(76, 175, 80, 0.1); border-color: #4CAF50;">
+                <span>🚀</span>
+                <div>
+                    <strong>Direct API Connection:</strong> Diese App verbindet sich <strong>direkt</strong> mit der OpenAI API (kein Serverless Timeout). 
+                    Komplexe Bild-Generierungen können 20-30 Sekunden dauern, Videos benötigen mehrere Minuten.
+                    <br><small>✅ Vorteil: Keine 10s Limits mehr! Dein Browser wartet, bis die Generierung fertig ist.</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="apiKey" id="apiKeyLabel">OpenAI API Key (erforderlich):</label>
+                <input type="password" id="apiKey" aria-labelledby="apiKeyLabel" placeholder="sk-proj-..." required>
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--space-sm);">
+                <input type="checkbox" id="persistKey" aria-describedby="persistKeyHelp">
+                <label for="persistKey" style="margin-bottom: 0; cursor: pointer;">API Key im Browser speichern (LocalStorage)</label>
+            </div>
+            <small id="persistKeyHelp" style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
+                Optional: Speichert den Key lokal in deinem Browser für die nächste Sitzung. Der Key verlässt niemals deinen Browser außer für API-Anfragen.
+            </small>
+        </div>
+
+        <div class="section-group">
+            <!-- Image Generation Section -->
+            <div class="card">
+                <h2>🖼️ Bilderzeugung</h2>
+                <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
+                    Model: <code>gpt-image-1</code>
+                </p>
+                
+                <div class="alert alert-warning" role="alert" style="font-size: var(--text-sm);">
+                    <span>ℹ️</span>
+                    <div>
+                        <strong>Hinweis:</strong> Erweiterte Parameter sind derzeit deaktiviert. 
+                        Aktuell funktionieren: <strong>Prompt, Size, Number of Images</strong>.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="imagePrompt" id="imagePromptLabel">Prompt:</label>
+                    <textarea id="imagePrompt" aria-labelledby="imagePromptLabel" 
+                              placeholder="Ein futuristischer Roboter in einer nebligen Stadt, digital art"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageSize" id="imageSizeLabel">Größe:</label>
+                    <select id="imageSize" aria-labelledby="imageSizeLabel">
+                        <option value="auto">Auto (Model entscheidet)</option>
+                        <option value="1024x1024" selected>1024x1024 (Quadrat)</option>
+                        <option value="1536x1024">1536x1024 (Querformat)</option>
+                        <option value="1024x1536">1024x1536 (Hochformat)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageCount" id="imageCountLabel">Anzahl Bilder:</label>
+                    <select id="imageCount" aria-labelledby="imageCountLabel">
+                        <option value="1" selected>1 Bild</option>
+                        <option value="2">2 Bilder</option>
+                        <option value="3">3 Bilder</option>
+                        <option value="4">4 Bilder</option>
+                        <option value="5">5 Bilder</option>
+                        <option value="10">10 Bilder (max)</option>
+                    </select>
+                </div>
+                
+                <!-- Erweiterte Parameter - derzeit deaktiviert -->
+                <details>
+                    <summary>🔧 Erweiterte Parameter (derzeit nicht aktiv)</summary>
+                    <div style="opacity: 0.6;">
+                        <p style="font-size: var(--text-sm); margin-bottom: var(--space-md);">
+                            <em>Diese Parameter werden von der aktuellen API-Version möglicherweise nicht unterstützt.</em>
+                        </p>
+                        <div class="form-group">
+                            <label for="imageQuality">Qualität:</label>
+                            <select id="imageQuality" disabled>
+                                <option value="auto" selected>auto</option>
+                                <option value="low">low</option>
+                                <option value="medium">medium</option>
+                                <option value="high">high</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageBackground">Hintergrund:</label>
+                            <select id="imageBackground" disabled>
+                                <option value="auto" selected>auto</option>
+                        <option value="transparent">transparent</option>
+                        <option value="opaque">opaque</option>
+                    </select>
+                </div>
+                        <div class="form-group">
+                            <label for="imageOutputFormat">Output Format:</label>
+                            <select id="imageOutputFormat" disabled>
+                                <option value="png" selected>PNG</option>
+                                <option value="jpeg">JPEG</option>
+                                <option value="webp">WebP</option>
+                            </select>
+                        </div>
+                    </div>
+                </details>
+
+                <div class="button-group">
+                    <button class="primary" id="generateImageBtn" aria-controls="imageResultContainer">
+                        🎨 Bild generieren
+                    </button>
+                    <button class="danger" id="cancelImageBtn" disabled aria-controls="imageResultContainer">
+                        ✖ Abbrechen
+                    </button>
+                </div>
+
+                <div class="progress-bar" id="imageProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill"></div>
+                </div>
+
+                <div class="result-container" id="imageResultContainer">
+                    <!-- Image result will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Video Generation Section -->
+            <div class="card">
+                <h2>🎬 Videoerzeugung</h2>
+                <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
+                    Models: <code>sora-2</code> | <code>sora-2-pro</code>
+                </p>
+
+                <div class="form-group">
+                    <label for="videoPrompt" id="videoPromptLabel">Prompt:</label>
+                    <textarea id="videoPrompt" aria-labelledby="videoPromptLabel" 
+                              placeholder="Ein kurzer Clip einer Katze, die auf einem Skateboard durch New York City fährt."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoSeconds" id="videoSecondsLabel">Dauer (Sekunden):</label>
+                    <select id="videoSeconds" aria-labelledby="videoSecondsLabel">
+                        <option value="4">4 Sekunden</option>
+                        <option value="8" selected>8 Sekunden</option>
+                        <option value="12">12 Sekunden</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoSize" id="videoSizeLabel">Auflösung:</label>
+                    <select id="videoSize" aria-labelledby="videoSizeLabel">
+                        <option value="">Standard</option>
+                        <option value="1280x720">1280x720 (HD 720p - 16:9)</option>
+                        <option value="1920x1080">1920x1080 (Full HD - 16:9)</option>
+                        <option value="720x1280">720x1280 (Portrait HD)</option>
+                        <option value="1080x1920">1080x1920 (Portrait Full HD)</option>
+                        <option value="1080x1080">1080x1080 (Quadrat)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoModel" id="videoModelLabel">Model:</label>
+                    <select id="videoModel" aria-labelledby="videoModelLabel">
+                        <option value="sora-2" selected>sora-2 (Schnell, gute Qualität)</option>
+                        <option value="sora-2-pro">sora-2-pro (Langsamer, beste Qualität)</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button class="primary" id="generateVideoBtn" aria-controls="videoResultContainer">
+                        🎬 Video generieren
+                    </button>
+                    <button class="danger" id="cancelVideoBtn" disabled aria-controls="videoResultContainer">
+                        ✖ Abbrechen
+                    </button>
+                </div>
+
+                <div class="progress-bar" id="videoProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill">0%</div>
+                </div>
+
+                <div class="result-container" id="videoResultContainer">
+                    <!-- Video result will be displayed here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs and History Section -->
+        <div class="section-group" style="margin-top: var(--space-2xl);">
+            <div class="card" style="grid-column: 1 / -1;">
+                <h2>📋 Logs & Status</h2>
+                <div class="button-group" style="margin-bottom: var(--space-md);">
+                    <button class="secondary" id="clearLogBtn">🗑️ Log löschen</button>
+                </div>
+                <pre class="log-area" id="logArea" aria-live="polite" aria-atomic="true"></pre>
+            </div>
+        </div>
+
+        <div class="section-group">
+            <div class="card">
+                <h2>🎨 Media Gallery</h2>
+                <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-md);">
+                    Klicke auf ein Bild oder Video, um es in Vollansicht zu öffnen.
+                </p>
+                <div id="historyList">
+                    <p style="text-align: center; color: rgba(0, 0, 0, 0.4); font-style: italic;">
+                        Noch keine Medien generiert.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // OpenAI Media Generator - JavaScript Logic
+        // ==========================================
+
+        const PROXY_ENDPOINT = '/api/openai-proxy';
+const IMAGE_ENDPOINT = PROXY_ENDPOINT;
+const VIDEO_CREATE_ENDPOINT = PROXY_ENDPOINT;
+const VIDEO_STATUS_ENDPOINT = PROXY_ENDPOINT;
+const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
+
+        // DOM Elements
+        const apiKeyInput = document.getElementById('apiKey');
+        const persistKeyCheckbox = document.getElementById('persistKey');
+        const logArea = document.getElementById('logArea');
+        const historyList = document.getElementById('historyList');
+        const clearLogBtn = document.getElementById('clearLogBtn');
+
+        // Image Generation Elements
+        const imagePromptInput = document.getElementById('imagePrompt');
+        const imageSizeSelect = document.getElementById('imageSize');
+        const imageCountSelect = document.getElementById('imageCount');
+        const generateImageBtn = document.getElementById('generateImageBtn');
+        const cancelImageBtn = document.getElementById('cancelImageBtn');
+        const imageResultContainer = document.getElementById('imageResultContainer');
+        const imageProgressBar = document.getElementById('imageProgressBar');
+        const imageProgressBarFill = imageProgressBar.querySelector('.progress-bar-fill');
+
+        // Video Generation Elements
+        const videoPromptInput = document.getElementById('videoPrompt');
+        const videoSecondsInput = document.getElementById('videoSeconds');
+        const videoSizeSelect = document.getElementById('videoSize');
+        const videoModelSelect = document.getElementById('videoModel');
+        const generateVideoBtn = document.getElementById('generateVideoBtn');
+        const cancelVideoBtn = document.getElementById('cancelVideoBtn');
+        const videoResultContainer = document.getElementById('videoResultContainer');
+        const videoProgressBar = document.getElementById('videoProgressBar');
+        const videoProgressBarFill = videoProgressBar.querySelector('.progress-bar-fill');
+
+        let imageAbortController = null;
+        let videoAbortController = null;
+        let videoPollingInterval = null;
+        let mediaHistory = [];
+
+// --- Utility Functions ---
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️';
+            logEntry.textContent = `${icon} [${timestamp}] ${message}`;
+            logEntry.style.marginBottom = '4px';
+            if (type === 'error') logEntry.style.color = '#ff6b6b';
+            if (type === 'success') logEntry.style.color = '#51cf66';
+            if (type === 'warning') logEntry.style.color = '#ffd43b';
+            logArea.prepend(logEntry);
+            while (logArea.children.length > 100) {
+                logArea.removeChild(logArea.lastChild);
+            }
+        }
+
+        function updateProgressBar(progressBar, progressBarFill, percentage) {
+            const clampedPercentage = Math.min(100, Math.max(0, percentage));
+            progressBarFill.style.width = `${clampedPercentage}%`;
+            progressBarFill.textContent = `${Math.round(clampedPercentage)}%`;
+            progressBar.setAttribute('aria-valuenow', clampedPercentage);
+            progressBar.style.display = clampedPercentage > 0 && clampedPercentage < 100 ? 'block' : 'none';
+        }
+
+        function addMediaToHistory(type, prompt, mediaUrl, thumbnailUrl = null) {
+            const item = { 
+                type, 
+                prompt, 
+                mediaUrl, 
+                thumbnailUrl: thumbnailUrl || mediaUrl,
+                timestamp: new Date().toISOString() 
+            };
+            mediaHistory.unshift(item);
+            if (mediaHistory.length > 20) mediaHistory.pop();
+            renderHistory();
+        }
+
+        function renderHistory() {
+            historyList.innerHTML = '';
+            if (mediaHistory.length === 0) {
+                historyList.innerHTML = '<p style="text-align: center; color: rgba(0, 0, 0, 0.4); font-style: italic;">Noch keine Medien generiert.</p>';
+                return;
+            }
+
+            mediaHistory.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.style.marginBottom = 'var(--space-md)';
+                div.style.padding = 'var(--space-sm)';
+                div.style.border = '1px solid rgba(0, 0, 0, 0.06)';
+                div.style.borderRadius = 'var(--radius-md)';
+                div.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(250, 250, 252, 1) 100%)';
+                div.style.cursor = 'pointer';
+                div.style.transition = 'all 0.2s ease';
+                div.setAttribute('role', 'button');
+                div.setAttribute('tabindex', '0');
+                
+                div.onmouseenter = () => {
+                    div.style.transform = 'translateY(-2px)';
+                    div.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                };
+                div.onmouseleave = () => {
+                    div.style.transform = 'translateY(0)';
+                    div.style.boxShadow = 'none';
+                };
+                
+                // Thumbnail
+                const mediaElement = item.type === 'image' 
+                    ? document.createElement('img') 
+                    : document.createElement('video');
+                
+                mediaElement.src = item.thumbnailUrl;
+                mediaElement.style.width = '100%';
+                mediaElement.style.height = '120px';
+                mediaElement.style.objectFit = 'cover';
+                mediaElement.style.borderRadius = 'var(--radius-sm)';
+                mediaElement.style.marginBottom = 'var(--space-xs)';
+                
+                // Info
+                const info = document.createElement('div');
+                info.style.fontSize = 'var(--text-xs)';
+                info.style.color = 'rgba(0, 0, 0, 0.6)';
+                const icon = item.type === 'image' ? '🖼️' : '🎬';
+                const timeAgo = new Date(item.timestamp).toLocaleTimeString();
+                info.innerHTML = `${icon} <strong>${item.type}</strong> · ${timeAgo}`;
+                
+                const promptText = document.createElement('div');
+                promptText.style.fontSize = 'var(--text-xs)';
+                promptText.style.color = 'rgba(0, 0, 0, 0.5)';
+                promptText.style.marginTop = 'var(--space-xs)';
+                promptText.style.overflow = 'hidden';
+                promptText.style.textOverflow = 'ellipsis';
+                promptText.style.whiteSpace = 'nowrap';
+                promptText.textContent = item.prompt;
+                
+                div.appendChild(mediaElement);
+                div.appendChild(info);
+                div.appendChild(promptText);
+                
+                // Click to view full media
+                div.onclick = () => viewMedia(item);
+                div.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        viewMedia(item);
+                    }
+                };
+                
+                historyList.appendChild(div);
+            });
+        }
+
+        function viewMedia(item) {
+            // Create modal overlay
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'rgba(0, 0, 0, 0.9)';
+            overlay.style.zIndex = '10000';
+            overlay.style.display = 'flex';
+            overlay.style.flexDirection = 'column';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            overlay.style.padding = 'var(--space-xl)';
+            overlay.style.backdropFilter = 'blur(10px)';
+            overlay.style.cursor = 'pointer';
+            
+            // Close on click
+            overlay.onclick = () => document.body.removeChild(overlay);
+            
+            // Media element
+            const mediaElement = item.type === 'image' 
+                ? document.createElement('img') 
+                : document.createElement('video');
+            
+            mediaElement.src = item.mediaUrl;
+            mediaElement.style.maxWidth = '90%';
+            mediaElement.style.maxHeight = '80%';
+            mediaElement.style.borderRadius = 'var(--radius-lg)';
+            mediaElement.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.5)';
+            mediaElement.onclick = (e) => e.stopPropagation(); // Prevent closing when clicking media
+            
+            if (item.type === 'video') {
+                mediaElement.controls = true;
+                mediaElement.autoplay = true;
+            }
+            
+            // Info bar
+            const infoBar = document.createElement('div');
+            infoBar.style.marginTop = 'var(--space-lg)';
+            infoBar.style.background = 'rgba(255, 255, 255, 0.1)';
+            infoBar.style.padding = 'var(--space-md)';
+            infoBar.style.borderRadius = 'var(--radius-md)';
+            infoBar.style.color = 'white';
+            infoBar.style.maxWidth = '800px';
+            infoBar.style.textAlign = 'center';
+            infoBar.onclick = (e) => e.stopPropagation();
+            
+            const promptDisplay = document.createElement('p');
+            promptDisplay.style.margin = '0 0 var(--space-sm) 0';
+            promptDisplay.style.fontSize = 'var(--text-sm)';
+            promptDisplay.innerHTML = `<strong>Prompt:</strong> ${item.prompt}`;
+            
+            const downloadBtn = document.createElement('a');
+            downloadBtn.href = item.mediaUrl;
+            downloadBtn.download = `startplatz-ai-${item.type}-${Date.now()}.${item.type === 'image' ? 'png' : 'mp4'}`;
+            downloadBtn.textContent = '⬇️ Download';
+            downloadBtn.className = 'btn-primary';
+            downloadBtn.style.margin = 'var(--space-sm)';
+            downloadBtn.onclick = (e) => e.stopPropagation();
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = '✖ Schließen';
+            closeBtn.className = 'secondary';
+            closeBtn.style.margin = 'var(--space-sm)';
+            closeBtn.onclick = () => document.body.removeChild(overlay);
+            
+            infoBar.appendChild(promptDisplay);
+            infoBar.appendChild(downloadBtn);
+            infoBar.appendChild(closeBtn);
+            
+            overlay.appendChild(mediaElement);
+            overlay.appendChild(infoBar);
+            document.body.appendChild(overlay);
+            
+            log(`Viewing ${item.type}: "${item.prompt}"`, 'info');
+        }
+
+        function b64toBlob(b64Data, contentType) {
+            const sliceSize = 512;
+            const byteCharacters = atob(b64Data);
+            const byteArrays = [];
+
+            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                const slice = byteCharacters.slice(offset, offset + sliceSize);
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+
+            return new Blob(byteArrays, { type: contentType });
+        }
+
+        async function fetchProxy(url, options, action, payload, retryCount = 0) {
+            // Get API Key from input field (user's own key)
+            const userApiKey = apiKeyInput.value.trim();
+            
+            const requestBody = { 
+                action, 
+                payload,
+                apiKey: userApiKey // Send user's API key to proxy
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: JSON.stringify(requestBody),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    signal: options.signal
+                });
+
+                if (!response.ok) {
+                    // Handle 504 Gateway Timeout with auto-retry (once)
+                    if (response.status === 504 && retryCount === 0) {
+                        log('⏳ Request timeout detected. Retrying once...', 'warning');
+                        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1s before retry
+                        return fetchProxy(url, options, action, payload, retryCount + 1);
+                    }
+
+                    let errorDetails = { status: response.status, message: `HTTP Error: ${response.statusText}` };
+                    try {
+                        const errorJson = await response.json();
+                        if (errorJson.error) {
+                            errorDetails.message = errorJson.error.message || errorDetails.message;
+                            errorDetails.details = errorJson.error;
+                        } else {
+                            errorDetails.message = JSON.stringify(errorJson);
+                        }
+                    } catch (e) {
+                        // Ignore JSON parsing error
+                    }
+
+                    // Special helpful message for 504 after retry failed
+                    if (response.status === 504) {
+                        log(`⏱️ Netlify Function Timeout (10s limit on Free Tier)`, 'error');
+                        log(`💡 Try: Simpler prompt OR upgrade to Netlify Pro (26s timeout)`, 'error');
+                        errorDetails.message = 'Request timeout - try a simpler prompt';
+                    } else {
+                        log(`Proxy Call Failed (${errorDetails.status}): ${errorDetails.message}`, 'error');
+                        log('Recovery Hint: Check serverless function logs and OPENAI_API_KEY environment variable.', 'error');
+                    }
+                    
+                    throw errorDetails;
+                }
+
+                return response.json();
+            } catch (error) {
+                // If it's a network error (not abort) and first try, retry once
+                if (retryCount === 0 && error.name !== 'AbortError' && !error.status) {
+                    log('⏳ Network issue detected. Retrying once...', 'warning');
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    return fetchProxy(url, options, action, payload, retryCount + 1);
+                }
+                throw error;
+            }
+        }
+
+        // --- Image Generation Logic ---
+
+        async function createImage(body, signal) {
+            log(`Starting image generation with model: ${body.model}`, 'info');
+            
+            // Direct API call to OpenAI (bypasses Netlify timeout limits)
+            const userApiKey = apiKeyInput.value.trim();
+            
+            const response = await fetch('https://api.openai.com/v1/images/generations', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${userApiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body),
+                signal: signal
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error?.message || `API Error: ${response.statusText}`);
+            }
+
+            return await response.json();
+        }
+
+        async function generateImage() {
+            const prompt = imagePromptInput.value.trim();
+            const size = imageSizeSelect.value;
+            const n = parseInt(imageCountSelect.value, 10);
+
+            if (!apiKeyInput.value.trim()) {
+                log('⚠️ Bitte gib zuerst deinen OpenAI API Key ein!', 'error');
+                apiKeyInput.focus();
+                return;
+            }
+
+            if (!prompt) {
+                log('Image prompt cannot be empty.', 'error');
+                return;
+            }
+
+            imageAbortController = new AbortController();
+            const signal = imageAbortController.signal;
+            generateImageBtn.disabled = true;
+            cancelImageBtn.disabled = false;
+            imageResultContainer.innerHTML = '';
+            updateProgressBar(imageProgressBar, imageProgressBarFill, 1);
+
+            try {
+                // Build request with all parameters
+                const requestBody = {
+                    model: 'gpt-image-1',
+                    prompt: prompt
+                };
+                
+                // Add optional parameters
+                if (size && size !== 'auto') {
+                    requestBody.size = size;
+                }
+                if (n > 1) {
+                    requestBody.n = n;
+                }
+
+                log(`Image request: ${JSON.stringify(requestBody)}`, 'info');
+                const data = await createImage(requestBody, signal);
+                
+                updateProgressBar(imageProgressBar, imageProgressBarFill, 100);
+                log(`Image generation completed! Generated ${data.data.length} image(s).`, 'success');
+
+                if (data.data && data.data.length > 0) {
+                    imageResultContainer.innerHTML = '';
+                    
+                    data.data.forEach((imageData, index) => {
+                        const revisedPrompt = imageData.revised_prompt || prompt;
+                        
+                        const imageContainer = document.createElement('div');
+                        imageContainer.className = 'image-container';
+                        
+                        if (data.data.length > 1) {
+                            const title = document.createElement('h4');
+                            title.textContent = `Bild ${index + 1} von ${data.data.length}`;
+                            imageContainer.appendChild(title);
+                        }
+                        
+                        let img = document.createElement('img');
+                    img.alt = revisedPrompt;
+                    img.setAttribute('aria-label', 'Generated image');
+
+                        let downloadLink = document.createElement('a');
+                        downloadLink.className = 'btn-primary';
+                        downloadLink.style.marginRight = '10px';
+                        
+                        let mediaUrl;
+                        if (imageData.b64_json) {
+                            const blob = b64toBlob(imageData.b64_json, 'image/png');
+                            const blobUrl = URL.createObjectURL(blob);
+                            mediaUrl = blobUrl;
+                            img.src = blobUrl;
+                    downloadLink.href = blobUrl;
+                            downloadLink.download = `startplatz-ai-image-${Date.now()}-${index + 1}.png`;
+                            downloadLink.textContent = '⬇️ Download PNG';
+                        } else if (imageData.url) {
+                            mediaUrl = imageData.url;
+                            img.src = imageData.url;
+                            downloadLink.href = imageData.url;
+                            downloadLink.target = '_blank';
+                            downloadLink.download = `startplatz-ai-image-${Date.now()}-${index + 1}.png`;
+                            downloadLink.textContent = '⬇️ Download';
+                        }
+
+                        // Add to history (only first image if multiple)
+                        if (index === 0 && mediaUrl) {
+                            addMediaToHistory('image', prompt, mediaUrl);
+                        }
+
+                        imageContainer.appendChild(img);
+                        imageContainer.appendChild(document.createElement('br'));
+                        imageContainer.appendChild(downloadLink);
+
+                        if (index === 0) {
+                    const copyPromptBtn = document.createElement('button');
+                            copyPromptBtn.textContent = '📋 Prompt kopieren';
+                    copyPromptBtn.className = 'secondary';
+                    copyPromptBtn.onclick = () => {
+                        navigator.clipboard.writeText(prompt).then(() => {
+                                    log('Prompt copied to clipboard.', 'success');
+                        }).catch(err => {
+                            log('Could not copy prompt: ' + err, 'error');
+                        });
+                    };
+                            imageContainer.appendChild(copyPromptBtn);
+                            
+                            if (revisedPrompt && revisedPrompt !== prompt) {
+                                const revisedPromptText = document.createElement('p');
+                                revisedPromptText.innerHTML = `<strong>Revised Prompt:</strong> ${revisedPrompt}`;
+                                revisedPromptText.style.marginTop = '10px';
+                                revisedPromptText.style.fontSize = 'var(--text-sm)';
+                                imageContainer.insertBefore(revisedPromptText, imageContainer.firstChild);
+                            }
+                        }
+                        
+                        imageResultContainer.appendChild(imageContainer);
+                    });
+                } else {
+                    log('API returned no image data.', 'error');
+                }
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    log('Image generation aborted by user.', 'warning');
+                } else {
+                    log('Image generation failed. See logs for details.', 'error');
+                }
+                updateProgressBar(imageProgressBar, imageProgressBarFill, 0);
+            } finally {
+                generateImageBtn.disabled = false;
+                cancelImageBtn.disabled = true;
+                imageAbortController = null;
+                updateProgressBar(imageProgressBar, imageProgressBarFill, 0);
+            }
+        }
+
+        // --- Video Generation Logic ---
+
+        async function createVideo(body, signal) {
+            log(`Starting video generation job with model: ${body.model}`, 'info');
+            
+            // Direct API call to OpenAI (bypasses Netlify timeout limits)
+            const userApiKey = apiKeyInput.value.trim();
+            
+            const response = await fetch('https://api.openai.com/v1/videos', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${userApiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body),
+                signal: signal
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error?.message || `API Error: ${response.statusText}`);
+            }
+
+            return await response.json();
+        }
+
+        async function getJobStatus(jobId) {
+            // Direct API call to OpenAI
+            const userApiKey = apiKeyInput.value.trim();
+            
+            const response = await fetch(`https://api.openai.com/v1/videos/${jobId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${userApiKey}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error?.message || `API Error: ${response.statusText}`);
+            }
+
+            return await response.json();
+        }
+
+        async function downloadVideo(jobId) {
+            log(`Downloading video content for job: ${jobId}`, 'info');
+            
+            // Direct API call to OpenAI
+            const userApiKey = apiKeyInput.value.trim();
+            
+            const response = await fetch(`https://api.openai.com/v1/videos/${jobId}/content`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${userApiKey}`
+                },
+                redirect: 'follow' // Follow redirects automatically
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error?.message || `Failed to download video: ${response.statusText}`);
+            }
+
+            // Direct blob response from API
+            return await response.blob();
+        }
+
+        async function generateVideo() {
+            const prompt = videoPromptInput.value.trim();
+            const seconds = videoSecondsInput.value;
+            const size = videoSizeSelect.value;
+            const model = videoModelSelect.value;
+
+            if (!apiKeyInput.value.trim()) {
+                log('⚠️ Bitte gib zuerst deinen OpenAI API Key ein!', 'error');
+                apiKeyInput.focus();
+                return;
+            }
+
+            if (!prompt || !seconds) {
+                log('Video prompt or duration is invalid.', 'error');
+                return;
+            }
+
+            if (videoPollingInterval) clearInterval(videoPollingInterval);
+            videoAbortController = new AbortController();
+            const signal = videoAbortController.signal;
+            generateVideoBtn.disabled = true;
+            cancelVideoBtn.disabled = false;
+            videoResultContainer.innerHTML = '';
+            updateProgressBar(videoProgressBar, videoProgressBarFill, 1);
+
+            try {
+                const requestBody = {
+                    model: model,
+                    prompt: prompt,
+                    seconds: seconds,
+                    ...(size && { size: size })
+                };
+
+                log(`Video request: ${JSON.stringify(requestBody)}`, 'info');
+                const initialJob = await createVideo(requestBody, signal);
+                let jobId = initialJob.id;
+                log(`Job created. ID: ${jobId}. Status: ${initialJob.status}`, 'info');
+
+                await new Promise((resolve, reject) => {
+                    videoPollingInterval = setInterval(async () => {
+                        if (signal.aborted) {
+                            clearInterval(videoPollingInterval);
+                            return reject({ name: 'AbortError' });
+                        }
+
+                        try {
+                            const jobStatus = await getJobStatus(jobId);
+                            const status = jobStatus.status;
+                            const progress = jobStatus.progress || 0;
+
+                            log(`Job Status: ${status}. Progress: ${progress}%`, 'info');
+                            updateProgressBar(videoProgressBar, videoProgressBarFill, progress);
+
+                            if (status === 'completed') {
+                                clearInterval(videoPollingInterval);
+                                resolve(jobStatus);
+                            } else if (status === 'failed') {
+                                clearInterval(videoPollingInterval);
+                                reject({ status: 500, message: 'Video generation job failed.', details: jobStatus });
+                            }
+                        } catch (e) {
+                            clearInterval(videoPollingInterval);
+                            reject(e);
+                        }
+                    }, 5000);
+                });
+
+                log('Downloading video content...', 'info');
+                const videoBlob = await downloadVideo(jobId);
+                const videoUrl = URL.createObjectURL(videoBlob);
+
+                log('Video generation completed successfully!', 'success');
+
+                // Add to history
+                addMediaToHistory('video', prompt, videoUrl);
+
+                videoResultContainer.innerHTML = '';
+                
+                // Video-ID Container
+                const videoIdContainer = document.createElement('div');
+                videoIdContainer.className = 'video-id-container';
+                
+                const videoIdLabel = document.createElement('strong');
+                videoIdLabel.textContent = 'Video ID: ';
+                
+                const videoIdText = document.createElement('code');
+                videoIdText.textContent = jobId;
+                
+                const copyIdBtn = document.createElement('button');
+                copyIdBtn.textContent = '📋 Copy ID';
+                copyIdBtn.className = 'secondary';
+                copyIdBtn.onclick = () => {
+                    navigator.clipboard.writeText(jobId).then(() => {
+                        log(`Video ID copied: ${jobId}`, 'success');
+                    }).catch(err => {
+                        log('Could not copy video ID: ' + err, 'error');
+                    });
+                };
+                
+                videoIdContainer.appendChild(videoIdLabel);
+                videoIdContainer.appendChild(videoIdText);
+                videoIdContainer.appendChild(copyIdBtn);
+                videoResultContainer.appendChild(videoIdContainer);
+
+                // Video Element
+                const videoElement = document.createElement('video');
+                videoElement.src = videoUrl;
+                videoElement.controls = true;
+                videoElement.alt = prompt;
+                videoElement.style.width = '100%';
+                videoElement.style.maxWidth = '800px';
+                videoElement.style.borderRadius = 'var(--radius-md)';
+                videoElement.setAttribute('aria-label', 'Generated video');
+
+                // Download Button
+                const downloadLink = document.createElement('a');
+                downloadLink.href = videoUrl;
+                downloadLink.download = `startplatz-ai-video-${jobId}.mp4`;
+                downloadLink.textContent = '⬇️ Download MP4';
+                downloadLink.className = 'btn-primary';
+                downloadLink.style.marginRight = '10px';
+                
+                // Copy Prompt Button
+                const copyPromptBtn = document.createElement('button');
+                copyPromptBtn.textContent = '📋 Prompt kopieren';
+                copyPromptBtn.className = 'secondary';
+                copyPromptBtn.onclick = () => {
+                    navigator.clipboard.writeText(prompt).then(() => {
+                        log('Video prompt copied to clipboard.', 'success');
+                    }).catch(err => {
+                        log('Could not copy prompt: ' + err, 'error');
+                    });
+                };
+
+                videoResultContainer.appendChild(videoElement);
+                videoResultContainer.appendChild(document.createElement('br'));
+                videoResultContainer.appendChild(downloadLink);
+                videoResultContainer.appendChild(copyPromptBtn);
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    log('Video generation aborted by user.', 'warning');
+                } else {
+                    log('Video generation failed. See logs for details.', 'error');
+                }
+                updateProgressBar(videoProgressBar, videoProgressBarFill, 0);
+            } finally {
+                generateVideoBtn.disabled = false;
+                cancelVideoBtn.disabled = true;
+                videoAbortController = null;
+                if (videoPollingInterval) clearInterval(videoPollingInterval);
+                updateProgressBar(videoProgressBar, videoProgressBarFill, 0);
+            }
+        }
+
+        // --- Event Listeners and Initialization ---
+
+        function loadApiKey() {
+            const savedKey = localStorage.getItem('openaiApiKey');
+            if (savedKey) {
+                apiKeyInput.value = savedKey;
+                persistKeyCheckbox.checked = true;
+                log('API Key loaded from localStorage.', 'info');
+            }
+        }
+
+        function handleKeyPersistence() {
+            if (persistKeyCheckbox.checked) {
+                const key = apiKeyInput.value.trim();
+                if (key) {
+                    localStorage.setItem('openaiApiKey', key);
+                    log('API Key saved to localStorage.', 'success');
+                } else {
+                    persistKeyCheckbox.checked = false;
+                    log('Cannot persist empty API Key.', 'warning');
+                }
+            } else {
+                localStorage.removeItem('openaiApiKey');
+                log('API Key removed from localStorage.', 'info');
+            }
+        }
+
+        persistKeyCheckbox.addEventListener('change', handleKeyPersistence);
+        apiKeyInput.addEventListener('input', () => {
+            if (!apiKeyInput.value) {
+                persistKeyCheckbox.checked = false;
+                localStorage.removeItem('openaiApiKey');
+            }
+        });
+
+        generateImageBtn.addEventListener('click', generateImage);
+        cancelImageBtn.addEventListener('click', () => {
+            if (imageAbortController) imageAbortController.abort();
+        });
+
+        generateVideoBtn.addEventListener('click', generateVideo);
+        cancelVideoBtn.addEventListener('click', () => {
+            if (videoAbortController) videoAbortController.abort();
+            if (videoPollingInterval) {
+                clearInterval(videoPollingInterval);
+                log('Video polling stopped.', 'warning');
+            }
+        });
+
+        clearLogBtn.addEventListener('click', () => {
+            logArea.innerHTML = '';
+            log('Log cleared.', 'info');
+        });
+
+        window.onload = () => {
+            loadApiKey();
+            log('🎨 OpenAI Media Generator initialized | STARTPLATZ AI HUB', 'success');
+            log('System ready. Start generating images or videos!', 'info');
+        };
+    </script>
+</body>
+</html>
