@@ -61,11 +61,42 @@ Deine App ist jetzt live unter:
 - ✅ Mehrere Bilder gleichzeitig (bis zu 10)
 - ✅ Download als PNG
 
+### 👁️ Bildanalyse (Vision - gpt-4.1-mini)
+- ✅ **NEU**: Bilder analysieren und verstehen
+- ✅ Bild-URL oder Upload unterstützt
+- ✅ Detail-Level einstellbar (low/high/auto)
+- ✅ Stellt Fragen zu Bildinhalten
+- ✅ Erkennt Text, Objekte, Farben, Szenen
+
 ### Videoerzeugung (sora-2 / sora-2-pro)
 - ✅ 4, 8 oder 12 Sekunden
-- ✅ Verschiedene Auflösungen (1280x720, 1920x1080, etc.)
+- ✅ **Preise (offiziell 2025):**
+  - sora-2: $0.10/Sekunde (720p)
+  - sora-2-pro: $0.30/Sekunde (720p) | $0.50/Sekunde (1024p/1792p)
+- ✅ Verschiedene Auflösungen:
+  - 720x1280 / 1280x720 (HD Portrait/Landscape)
+  - 1024x1792 / 1792x1024 (High-Res - nur sora-2-pro)
+- ⚠️ **Input Reference deaktiviert** (noch nicht von OpenAI API unterstützt)
 - ✅ Echtzeit-Fortschrittsanzeige
 - ✅ Download als MP4
+
+### 🎞️ Video Remix
+- ✅ **NEU**: Bestehende Videos mit neuem Prompt remixen
+- ✅ Erweitert oder verändert existierende Videos
+- ✅ Nutzt Video-ID von vorherigen Generierungen
+
+### 💰 Kosten-Tracking
+- ✅ **NEU**: Echtzeit-Kostenberechnung für jede Anfrage
+- ✅ Session-Gesamt-Übersicht
+- ✅ Transparente Preis-Details
+- ✅ Basierend auf offiziellen OpenAI-Preisen (2025)
+
+**Beispiel-Kosten:**
+- 1x Bild (1024x1024): $0.04
+- Bildanalyse (gpt-4.1-mini): ~$0.0001-0.001 (je nach Tokens)
+- Video 8s (sora-2, 720p): $0.80
+- Video 8s (sora-2-pro, 720p): $2.40
+- Video 8s (sora-2-pro, 1792p): $4.00
 
 ### Weitere Features
 - ✅ **Media Gallery** - Historie aller generierten Medien

@@ -156,9 +156,13 @@
 
         .section-group {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
             gap: var(--space-lg);
             margin-top: var(--space-lg);
+        }
+
+        .section-group.three-col {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
         }
 
         /* Typography */
@@ -726,9 +730,27 @@
     <div class="container">
         <h1>🎨 OpenAI Media Generator</h1>
         <p style="font-size: var(--text-lg); color: rgba(0, 0, 0, 0.7); margin-bottom: var(--space-xl);">
-            Generiere KI-Bilder mit <code>gpt-image-1</code> und KI-Videos mit <code>sora-2</code> / <code>sora-2-pro</code>. 
+            Generiere KI-Bilder mit <code>gpt-image-1</code>, analysiere Bilder mit <code>gpt-4.1-mini</code> und erstelle KI-Videos mit <code>sora-2</code> / <code>sora-2-pro</code>. 
             Professionelle Tools für kreative AI-Projekte.
         </p>
+
+        <!-- Cost Tracker -->
+        <div class="card-accent" id="costTracker" style="margin-bottom: var(--space-xl); display: none;">
+            <h2>💰 API Kosten-Übersicht</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md); margin-top: var(--space-md);">
+                <div>
+                    <strong>Letzte Anfrage:</strong>
+                    <div id="lastCost" style="font-size: var(--text-2xl); color: var(--color-primary-teal); margin-top: var(--space-xs);">$0.00</div>
+                </div>
+                <div>
+                    <strong>Session Total:</strong>
+                    <div id="sessionTotal" style="font-size: var(--text-2xl); color: var(--color-primary-lila); margin-top: var(--space-xs);">$0.00</div>
+                </div>
+            </div>
+            <div style="margin-top: var(--space-md); padding: var(--space-sm); background: rgba(255,255,255,0.5); border-radius: var(--radius-sm); font-size: var(--text-sm);">
+                <div id="costDetails">Noch keine Anfragen durchgeführt.</div>
+            </div>
+        </div>
 
         <!-- API-Key Section -->
         <div class="card-accent" style="margin-bottom: var(--space-xl);">
@@ -763,7 +785,7 @@
             </small>
         </div>
 
-        <div class="section-group">
+        <div class="section-group three-col">
             <!-- Image Generation Section -->
             <div class="card">
                 <h2>🖼️ Bilderzeugung</h2>
@@ -860,6 +882,62 @@
                 </div>
             </div>
 
+            <!-- Vision/Image Analysis Section -->
+            <div class="card">
+                <h2>👁️ Bildanalyse (Vision)</h2>
+                <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
+                    Model: <code>gpt-4.1-mini</code>
+                </p>
+
+                <div class="form-group">
+                    <label for="visionPrompt" id="visionPromptLabel">Frage zum Bild:</label>
+                    <textarea id="visionPrompt" aria-labelledby="visionPromptLabel" 
+                              placeholder="Was ist auf diesem Bild zu sehen?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="visionImageUrl" id="visionImageUrlLabel">Bild-URL:</label>
+                    <input type="text" id="visionImageUrl" aria-labelledby="visionImageUrlLabel" 
+                           placeholder="https://example.com/image.jpg">
+                </div>
+
+                <div style="text-align: center; margin: var(--space-md) 0; color: rgba(0,0,0,0.5);">- ODER -</div>
+
+                <div class="form-group">
+                    <label for="visionImageUpload" id="visionImageUploadLabel">Bild hochladen:</label>
+                    <input type="file" id="visionImageUpload" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" 
+                           style="padding: 10px; cursor: pointer;">
+                </div>
+
+                <div class="form-group">
+                    <label for="visionDetail" id="visionDetailLabel">Detail-Level:</label>
+                    <select id="visionDetail" aria-labelledby="visionDetailLabel">
+                        <option value="auto" selected>Auto (Model entscheidet)</option>
+                        <option value="low">Low (schneller, weniger Tokens)</option>
+                        <option value="high">High (detaillierter)</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button class="primary" id="analyzeImageBtn" aria-controls="visionResultContainer">
+                        👁️ Bild analysieren
+                    </button>
+                    <button class="danger" id="cancelVisionBtn" disabled aria-controls="visionResultContainer">
+                        ✖ Abbrechen
+                    </button>
+                </div>
+
+                <div class="progress-bar" id="visionProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill"></div>
+                </div>
+
+                <div class="result-container" id="visionResultContainer">
+                    <!-- Vision result will be displayed here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="section-group">
             <!-- Video Generation Section -->
             <div class="card">
                 <h2>🎬 Videoerzeugung</h2>
@@ -874,6 +952,21 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="videoInputReference" id="videoInputReferenceLabel" style="opacity: 0.5;">
+                        Input Referenz-Bild (Noch nicht verfügbar):
+                    </label>
+                    <input type="file" id="videoInputReference" accept="image/png,image/jpeg,image/jpg,image/webp" 
+                           style="padding: 10px; cursor: not-allowed; opacity: 0.5;" disabled>
+                    <div style="display: block; margin-top: var(--space-md); padding: var(--space-md); background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: var(--radius-md);">
+                        <div style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.7);">
+                            <strong>🚧 Feature in Entwicklung</strong><br>
+                            Das <code>input_reference</code> Feature ist noch nicht über die OpenAI API verfügbar. 
+                            Sobald es offiziell unterstützt wird, wird es hier aktiviert.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="videoSeconds" id="videoSecondsLabel">Dauer (Sekunden):</label>
                     <select id="videoSeconds" aria-labelledby="videoSecondsLabel">
                         <option value="4">4 Sekunden</option>
@@ -885,21 +978,26 @@
                 <div class="form-group">
                     <label for="videoSize" id="videoSizeLabel">Auflösung:</label>
                     <select id="videoSize" aria-labelledby="videoSizeLabel">
-                        <option value="">Standard</option>
-                        <option value="1280x720">1280x720 (HD 720p - 16:9)</option>
-                        <option value="1920x1080">1920x1080 (Full HD - 16:9)</option>
-                        <option value="720x1280">720x1280 (Portrait HD)</option>
-                        <option value="1080x1920">1080x1920 (Portrait Full HD)</option>
-                        <option value="1080x1080">1080x1080 (Quadrat)</option>
+                        <option value="">Standard (720x1280/1280x720)</option>
+                        <option value="1280x720">1280x720 (Landscape HD - 16:9)</option>
+                        <option value="720x1280">720x1280 (Portrait HD - 9:16)</option>
+                        <option value="1792x1024">1792x1024 (Landscape High-Res - nur sora-2-pro)</option>
+                        <option value="1024x1792">1024x1792 (Portrait High-Res - nur sora-2-pro)</option>
                     </select>
+                    <small style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
+                        💰 <strong>Preise:</strong> 720p = Standard-Preis | 1792/1024 = +66% (nur sora-2-pro)
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label for="videoModel" id="videoModelLabel">Model:</label>
                     <select id="videoModel" aria-labelledby="videoModelLabel">
-                        <option value="sora-2" selected>sora-2 (Schnell, gute Qualität)</option>
-                        <option value="sora-2-pro">sora-2-pro (Langsamer, beste Qualität)</option>
+                        <option value="sora-2" selected>sora-2 ($0.10/Sekunde - 720p)</option>
+                        <option value="sora-2-pro">sora-2-pro ($0.30/Sekunde - 720p | $0.50/Sekunde - 1024p/1792p)</option>
                     </select>
+                    <small style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
+                        💡 <strong>Tipp:</strong> sora-2 für schnelle Previews, sora-2-pro für finales Material
+                    </small>
                 </div>
 
                 <div class="button-group">
@@ -917,6 +1015,46 @@
 
                 <div class="result-container" id="videoResultContainer">
                     <!-- Video result will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Video Remix Section -->
+            <div class="card">
+                <h2>🎞️ Video Remix</h2>
+                <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
+                    Remixe ein bereits generiertes Video mit neuem Prompt
+                </p>
+
+                <div class="form-group">
+                    <label for="remixVideoId" id="remixVideoIdLabel">Video ID:</label>
+                    <input type="text" id="remixVideoId" aria-labelledby="remixVideoIdLabel" 
+                           placeholder="video_123">
+                    <small style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
+                        Die ID des Videos, das du remixen möchtest (findest du in der Video-Generierungs-Antwort).
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="remixPrompt" id="remixPromptLabel">Remix Prompt:</label>
+                    <textarea id="remixPrompt" aria-labelledby="remixPromptLabel" 
+                              placeholder="Erweitere die Szene, indem die Katze eine Verbeugung vor dem jubelnden Publikum macht"></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button class="primary" id="remixVideoBtn" aria-controls="remixResultContainer">
+                        🎞️ Video remixen
+                    </button>
+                    <button class="danger" id="cancelRemixBtn" disabled aria-controls="remixResultContainer">
+                        ✖ Abbrechen
+                    </button>
+                </div>
+
+                <div class="progress-bar" id="remixProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar-fill">0%</div>
+                </div>
+
+                <div class="result-container" id="remixResultContainer">
+                    <!-- Remix result will be displayed here -->
                 </div>
             </div>
         </div>
@@ -965,6 +1103,12 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
         const historyList = document.getElementById('historyList');
         const clearLogBtn = document.getElementById('clearLogBtn');
 
+        // Cost Tracker Elements
+        const costTracker = document.getElementById('costTracker');
+        const lastCostDisplay = document.getElementById('lastCost');
+        const sessionTotalDisplay = document.getElementById('sessionTotal');
+        const costDetailsDisplay = document.getElementById('costDetails');
+
         // Image Generation Elements
         const imagePromptInput = document.getElementById('imagePrompt');
         const imageSizeSelect = document.getElementById('imageSize');
@@ -975,8 +1119,20 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
         const imageProgressBar = document.getElementById('imageProgressBar');
         const imageProgressBarFill = imageProgressBar.querySelector('.progress-bar-fill');
 
+        // Vision Elements
+        const visionPromptInput = document.getElementById('visionPrompt');
+        const visionImageUrlInput = document.getElementById('visionImageUrl');
+        const visionImageUploadInput = document.getElementById('visionImageUpload');
+        const visionDetailSelect = document.getElementById('visionDetail');
+        const analyzeImageBtn = document.getElementById('analyzeImageBtn');
+        const cancelVisionBtn = document.getElementById('cancelVisionBtn');
+        const visionResultContainer = document.getElementById('visionResultContainer');
+        const visionProgressBar = document.getElementById('visionProgressBar');
+        const visionProgressBarFill = visionProgressBar.querySelector('.progress-bar-fill');
+
         // Video Generation Elements
         const videoPromptInput = document.getElementById('videoPrompt');
+        const videoInputReferenceInput = document.getElementById('videoInputReference');
         const videoSecondsInput = document.getElementById('videoSeconds');
         const videoSizeSelect = document.getElementById('videoSize');
         const videoModelSelect = document.getElementById('videoModel');
@@ -986,10 +1142,23 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
         const videoProgressBar = document.getElementById('videoProgressBar');
         const videoProgressBarFill = videoProgressBar.querySelector('.progress-bar-fill');
 
+        // Video Remix Elements
+        const remixVideoIdInput = document.getElementById('remixVideoId');
+        const remixPromptInput = document.getElementById('remixPrompt');
+        const remixVideoBtn = document.getElementById('remixVideoBtn');
+        const cancelRemixBtn = document.getElementById('cancelRemixBtn');
+        const remixResultContainer = document.getElementById('remixResultContainer');
+        const remixProgressBar = document.getElementById('remixProgressBar');
+        const remixProgressBarFill = remixProgressBar.querySelector('.progress-bar-fill');
+
         let imageAbortController = null;
+        let visionAbortController = null;
         let videoAbortController = null;
+        let remixAbortController = null;
         let videoPollingInterval = null;
+        let remixPollingInterval = null;
         let mediaHistory = [];
+        let sessionTotalCost = 0;
 
 // --- Utility Functions ---
 
@@ -1200,6 +1369,87 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
             return new Blob(byteArrays, { type: contentType });
         }
 
+        // --- Cost Calculation Functions ---
+
+        function calculateImageCost(size, count) {
+            // gpt-image-1 pricing (as of 2025): 
+            // $0.040 per 1024x1024, $0.060 per 1024x1536 or 1536x1024
+            let costPerImage = 0.040; // default 1024x1024
+            
+            if (size === '1024x1536' || size === '1536x1024') {
+                costPerImage = 0.060;
+            }
+            
+            return costPerImage * count;
+        }
+
+        function calculateVisionCost(promptTokens, imageTokens) {
+            // gpt-4.1-mini pricing: $0.15 per 1M input tokens
+            const inputCostPer1M = 0.15;
+            const outputCostPer1M = 0.60;
+            
+            const totalInputTokens = promptTokens + imageTokens;
+            const inputCost = (totalInputTokens / 1000000) * inputCostPer1M;
+            
+            // Assuming average output of ~100 tokens for image analysis
+            const estimatedOutputTokens = 100;
+            const outputCost = (estimatedOutputTokens / 1000000) * outputCostPer1M;
+            
+            return inputCost + outputCost;
+        }
+
+        function estimateImageTokens(width, height, detail) {
+            // Based on GPT Image 1 calculation from docs
+            if (detail === 'low') {
+                return 65;
+            }
+            
+            // Calculate patches needed
+            const patchesWidth = Math.ceil(width / 32);
+            const patchesHeight = Math.ceil(height / 32);
+            let rawPatches = patchesWidth * patchesHeight;
+            
+            // Cap at 1536
+            if (rawPatches > 1536) {
+                rawPatches = 1536;
+            }
+            
+            return rawPatches;
+        }
+
+        function calculateVideoCost(model, seconds, size) {
+            // Sora API pricing (as of 2025, official pricing)
+            // sora-2: 720x1280 or 1280x720 = $0.10 per second
+            // sora-2-pro: 720x1280 or 1280x720 = $0.30 per second
+            // sora-2-pro: 1024x1792 or 1792x1024 = $0.50 per second
+            
+            let costPerSecond = 0.10; // Default: sora-2 standard resolution
+            
+            if (model === 'sora-2-pro') {
+                // Check for high resolution (1024x1792 or 1792x1024)
+                if (size && (size.includes('1792') || size.includes('1024'))) {
+                    costPerSecond = 0.50;
+                } else {
+                    // Standard resolution for sora-2-pro
+                    costPerSecond = 0.30;
+                }
+            }
+            // sora-2 is always $0.10 per second regardless of resolution
+            
+            return parseFloat(seconds) * costPerSecond;
+        }
+
+        function updateCostDisplay(cost, description) {
+            costTracker.style.display = 'block';
+            sessionTotalCost += cost;
+            
+            lastCostDisplay.textContent = `$${cost.toFixed(4)}`;
+            sessionTotalDisplay.textContent = `$${sessionTotalCost.toFixed(4)}`;
+            costDetailsDisplay.innerHTML = `<strong>Letzte Anfrage:</strong> ${description} · <strong>Kosten:</strong> $${cost.toFixed(4)}`;
+            
+            log(`💰 Kosten für diese Anfrage: $${cost.toFixed(4)} | Session Total: $${sessionTotalCost.toFixed(4)}`, 'info');
+        }
+
         async function fetchProxy(url, options, action, payload, retryCount = 0) {
             // Get API Key from input field (user's own key)
             const userApiKey = apiKeyInput.value.trim();
@@ -1337,6 +1587,10 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
                 updateProgressBar(imageProgressBar, imageProgressBarFill, 100);
                 log(`Image generation completed! Generated ${data.data.length} image(s).`, 'success');
 
+                // Calculate and display costs
+                const imageCost = calculateImageCost(size === 'auto' ? '1024x1024' : size, n);
+                updateCostDisplay(imageCost, `Bild-Generierung: ${n}x ${size || 'auto'} (gpt-image-1)`);
+
                 if (data.data && data.data.length > 0) {
                     imageResultContainer.innerHTML = '';
                     
@@ -1430,30 +1684,234 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
             }
         }
 
-        // --- Video Generation Logic ---
+        // --- Vision/Image Analysis Logic ---
 
-        async function createVideo(body, signal) {
-            log(`Starting video generation job with model: ${body.model}`, 'info');
-            
-            // Direct API call to OpenAI (bypasses Netlify timeout limits)
-            const userApiKey = apiKeyInput.value.trim();
-            
-            const response = await fetch('https://api.openai.com/v1/videos', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${userApiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body),
-                signal: signal
-            });
+        async function analyzeImage() {
+            const prompt = visionPromptInput.value.trim();
+            const imageUrl = visionImageUrlInput.value.trim();
+            const imageFile = visionImageUploadInput.files[0];
+            const detail = visionDetailSelect.value;
 
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.error?.message || `API Error: ${response.statusText}`);
+            if (!apiKeyInput.value.trim()) {
+                log('⚠️ Bitte gib zuerst deinen OpenAI API Key ein!', 'error');
+                apiKeyInput.focus();
+                return;
             }
 
-            return await response.json();
+            if (!prompt) {
+                log('Vision prompt cannot be empty.', 'error');
+                return;
+            }
+
+            if (!imageUrl && !imageFile) {
+                log('Bitte gib eine Bild-URL ein oder lade ein Bild hoch.', 'error');
+                return;
+            }
+
+            visionAbortController = new AbortController();
+            const signal = visionAbortController.signal;
+            analyzeImageBtn.disabled = true;
+            cancelVisionBtn.disabled = false;
+            visionResultContainer.innerHTML = '';
+            updateProgressBar(visionProgressBar, visionProgressBarFill, 10);
+
+            try {
+                let imageContent;
+                
+                if (imageFile) {
+                    // Convert file to base64
+                    const reader = new FileReader();
+                    const base64Image = await new Promise((resolve, reject) => {
+                        reader.onload = () => resolve(reader.result.split(',')[1]);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(imageFile);
+                    });
+                    
+                    const mimeType = imageFile.type || 'image/jpeg';
+                    imageContent = {
+                        type: 'image_url',
+                        image_url: {
+                            url: `data:${mimeType};base64,${base64Image}`,
+                            detail: detail
+                        }
+                    };
+                } else {
+                    imageContent = {
+                        type: 'image_url',
+                        image_url: {
+                            url: imageUrl,
+                            detail: detail
+                        }
+                    };
+                }
+
+                updateProgressBar(visionProgressBar, visionProgressBarFill, 30);
+
+                const userApiKey = apiKeyInput.value.trim();
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${userApiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-4.1-mini',
+                        messages: [{
+                            role: 'user',
+                            content: [
+                                { type: 'text', text: prompt },
+                                imageContent
+                            ]
+                        }],
+                        max_tokens: 500
+                    }),
+                    signal: signal
+                });
+
+                updateProgressBar(visionProgressBar, visionProgressBarFill, 80);
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error?.message || `API Error: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                updateProgressBar(visionProgressBar, visionProgressBarFill, 100);
+                log('Vision analysis completed!', 'success');
+
+                const analysisText = data.choices[0].message.content;
+                
+                // Calculate costs
+                const usage = data.usage;
+                const promptTokens = usage?.prompt_tokens || 0;
+                const completionTokens = usage?.completion_tokens || 0;
+                const visionCost = calculateVisionCost(promptTokens, 0); // API already includes image tokens in prompt_tokens
+                updateCostDisplay(visionCost, `Bildanalyse: ${promptTokens} input + ${completionTokens} output tokens (gpt-4.1-mini)`);
+
+                // Display result
+                visionResultContainer.innerHTML = '';
+                
+                const resultDiv = document.createElement('div');
+                resultDiv.style.padding = 'var(--space-lg)';
+                resultDiv.style.background = 'linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(250,250,252,1) 100%)';
+                resultDiv.style.borderRadius = 'var(--radius-md)';
+                resultDiv.style.border = '1px solid rgba(0,0,0,0.06)';
+                
+                const heading = document.createElement('h4');
+                heading.textContent = '🔍 Analyse-Ergebnis:';
+                heading.style.marginBottom = 'var(--space-md)';
+                
+                const text = document.createElement('p');
+                text.textContent = analysisText;
+                text.style.whiteSpace = 'pre-wrap';
+                text.style.lineHeight = '1.7';
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.textContent = '📋 Antwort kopieren';
+                copyBtn.className = 'secondary';
+                copyBtn.style.marginTop = 'var(--space-md)';
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText(analysisText).then(() => {
+                        log('Analysis copied to clipboard.', 'success');
+                    }).catch(err => {
+                        log('Could not copy: ' + err, 'error');
+                    });
+                };
+                
+                resultDiv.appendChild(heading);
+                resultDiv.appendChild(text);
+                resultDiv.appendChild(copyBtn);
+                visionResultContainer.appendChild(resultDiv);
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    log('Vision analysis aborted by user.', 'warning');
+                } else {
+                    log(`Vision analysis failed: ${error.message}`, 'error');
+                }
+                updateProgressBar(visionProgressBar, visionProgressBarFill, 0);
+            } finally {
+                analyzeImageBtn.disabled = false;
+                cancelVisionBtn.disabled = true;
+                visionAbortController = null;
+                updateProgressBar(visionProgressBar, visionProgressBarFill, 0);
+            }
+        }
+
+        // --- Video Generation Logic ---
+
+        async function createVideo(body, inputReferenceFile, signal) {
+            log(`Starting video generation job with model: ${body.model}`, 'info');
+            
+            const userApiKey = apiKeyInput.value.trim();
+            
+            // If input_reference file exists, use FormData
+            if (inputReferenceFile) {
+                const formData = new FormData();
+                formData.append('prompt', body.prompt);
+                formData.append('model', body.model);
+                formData.append('seconds', body.seconds.toString());
+                if (body.size) formData.append('size', body.size);
+                
+                // Append the file with correct field name
+                formData.append('input_reference', inputReferenceFile, inputReferenceFile.name);
+                
+                log(`📤 Sending FormData with file: ${inputReferenceFile.name} (${inputReferenceFile.type}, ${inputReferenceFile.size} bytes)`, 'info');
+                
+                const response = await fetch('https://api.openai.com/v1/videos', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${userApiKey}`
+                        // Don't set Content-Type - let browser set it automatically with boundary
+                    },
+                    body: formData,
+                    signal: signal
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    let errorData;
+                    try {
+                        errorData = JSON.parse(errorText);
+                    } catch (e) {
+                        errorData = { error: { message: errorText } };
+                    }
+                    
+                    const errorMsg = errorData.error?.message || `API Error: ${response.statusText}`;
+                    log(`❌ API Error Response (${response.status}): ${errorMsg}`, 'error');
+                    log(`Full error details: ${errorText}`, 'error');
+                    throw new Error(errorMsg);
+                }
+
+                return await response.json();
+            } else {
+                // JSON request without input_reference
+                const response = await fetch('https://api.openai.com/v1/videos', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${userApiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body),
+                    signal: signal
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    let errorData;
+                    try {
+                        errorData = JSON.parse(errorText);
+                    } catch (e) {
+                        errorData = { error: { message: errorText } };
+                    }
+                    
+                    const errorMsg = errorData.error?.message || `API Error: ${response.statusText}`;
+                    log(`❌ API Error Response (${response.status}): ${errorMsg}`, 'error');
+                    throw new Error(errorMsg);
+                }
+
+                return await response.json();
+            }
         }
 
         async function getJobStatus(jobId) {
@@ -1503,6 +1961,8 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
             const seconds = videoSecondsInput.value;
             const size = videoSizeSelect.value;
             const model = videoModelSelect.value;
+            // Input reference is disabled, so we don't use it
+            const inputReferenceFile = null;
 
             if (!apiKeyInput.value.trim()) {
                 log('⚠️ Bitte gib zuerst deinen OpenAI API Key ein!', 'error');
@@ -1532,7 +1992,8 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
                 };
 
                 log(`Video request: ${JSON.stringify(requestBody)}`, 'info');
-                const initialJob = await createVideo(requestBody, signal);
+                
+                const initialJob = await createVideo(requestBody, inputReferenceFile, signal);
                 let jobId = initialJob.id;
                 log(`Job created. ID: ${jobId}. Status: ${initialJob.status}`, 'info');
 
@@ -1570,6 +2031,10 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
                 const videoUrl = URL.createObjectURL(videoBlob);
 
                 log('Video generation completed successfully!', 'success');
+
+                // Calculate and display costs
+                const videoCost = calculateVideoCost(model, seconds, size);
+                updateCostDisplay(videoCost, `Video-Generierung: ${seconds}s ${size || 'Standard'} (${model})`);
 
                 // Add to history
                 addMediaToHistory('video', prompt, videoUrl);
@@ -1641,7 +2106,7 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
                 if (error.name === 'AbortError') {
                     log('Video generation aborted by user.', 'warning');
                 } else {
-                    log('Video generation failed. See logs for details.', 'error');
+                    log(`Video generation failed: ${error.message}`, 'error');
                 }
                 updateProgressBar(videoProgressBar, videoProgressBarFill, 0);
             } finally {
@@ -1650,6 +2115,187 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
                 videoAbortController = null;
                 if (videoPollingInterval) clearInterval(videoPollingInterval);
                 updateProgressBar(videoProgressBar, videoProgressBarFill, 0);
+            }
+        }
+
+        // --- Video Remix Logic ---
+
+        async function remixVideo(videoId, prompt, signal) {
+            log(`Starting video remix for ${videoId}`, 'info');
+            
+            const userApiKey = apiKeyInput.value.trim();
+            
+            const response = await fetch(`https://api.openai.com/v1/videos/${videoId}/remix`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${userApiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt: prompt }),
+                signal: signal
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error?.message || `API Error: ${response.statusText}`);
+            }
+
+            return await response.json();
+        }
+
+        async function generateRemixVideo() {
+            const videoId = remixVideoIdInput.value.trim();
+            const prompt = remixPromptInput.value.trim();
+
+            if (!apiKeyInput.value.trim()) {
+                log('⚠️ Bitte gib zuerst deinen OpenAI API Key ein!', 'error');
+                apiKeyInput.focus();
+                return;
+            }
+
+            if (!videoId) {
+                log('Video ID is required for remix.', 'error');
+                return;
+            }
+
+            if (!prompt) {
+                log('Remix prompt cannot be empty.', 'error');
+                return;
+            }
+
+            if (remixPollingInterval) clearInterval(remixPollingInterval);
+            remixAbortController = new AbortController();
+            const signal = remixAbortController.signal;
+            remixVideoBtn.disabled = true;
+            cancelRemixBtn.disabled = false;
+            remixResultContainer.innerHTML = '';
+            updateProgressBar(remixProgressBar, remixProgressBarFill, 1);
+
+            try {
+                log(`Remix request for video: ${videoId}`, 'info');
+                const remixJob = await remixVideo(videoId, prompt, signal);
+                let jobId = remixJob.id;
+                log(`Remix job created. ID: ${jobId}. Status: ${remixJob.status}`, 'info');
+
+                await new Promise((resolve, reject) => {
+                    remixPollingInterval = setInterval(async () => {
+                        if (signal.aborted) {
+                            clearInterval(remixPollingInterval);
+                            return reject({ name: 'AbortError' });
+                        }
+
+                        try {
+                            const jobStatus = await getJobStatus(jobId);
+                            const status = jobStatus.status;
+                            const progress = jobStatus.progress || 0;
+
+                            log(`Remix Status: ${status}. Progress: ${progress}%`, 'info');
+                            updateProgressBar(remixProgressBar, remixProgressBarFill, progress);
+
+                            if (status === 'completed') {
+                                clearInterval(remixPollingInterval);
+                                resolve(jobStatus);
+                            } else if (status === 'failed') {
+                                clearInterval(remixPollingInterval);
+                                reject({ status: 500, message: 'Video remix job failed.', details: jobStatus });
+                            }
+                        } catch (e) {
+                            clearInterval(remixPollingInterval);
+                            reject(e);
+                        }
+                    }, 5000);
+                });
+
+                log('Downloading remixed video content...', 'info');
+                const videoBlob = await downloadVideo(jobId);
+                const videoUrl = URL.createObjectURL(videoBlob);
+
+                log('Video remix completed successfully!', 'success');
+
+                // Calculate and display costs (remix costs similar to generation)
+                // Note: We don't know exact model/duration from remix, so we estimate with sora-2 @ 8s
+                const remixCost = calculateVideoCost('sora-2', 8, '720x1280'); // Conservative estimate
+                updateCostDisplay(remixCost, `Video-Remix: ${videoId} → ${jobId} (Geschätzt: sora-2, 8s)`);
+
+                // Add to history
+                addMediaToHistory('video', prompt, videoUrl);
+
+                remixResultContainer.innerHTML = '';
+                
+                // Video-ID Container
+                const videoIdContainer = document.createElement('div');
+                videoIdContainer.className = 'video-id-container';
+                
+                const videoIdLabel = document.createElement('strong');
+                videoIdLabel.textContent = 'Remixed Video ID: ';
+                
+                const videoIdText = document.createElement('code');
+                videoIdText.textContent = jobId;
+                
+                const copyIdBtn = document.createElement('button');
+                copyIdBtn.textContent = '📋 Copy ID';
+                copyIdBtn.className = 'secondary';
+                copyIdBtn.onclick = () => {
+                    navigator.clipboard.writeText(jobId).then(() => {
+                        log(`Remixed Video ID copied: ${jobId}`, 'success');
+                    }).catch(err => {
+                        log('Could not copy video ID: ' + err, 'error');
+                    });
+                };
+                
+                videoIdContainer.appendChild(videoIdLabel);
+                videoIdContainer.appendChild(videoIdText);
+                videoIdContainer.appendChild(copyIdBtn);
+                remixResultContainer.appendChild(videoIdContainer);
+
+                // Video Element
+                const videoElement = document.createElement('video');
+                videoElement.src = videoUrl;
+                videoElement.controls = true;
+                videoElement.alt = prompt;
+                videoElement.style.width = '100%';
+                videoElement.style.maxWidth = '800px';
+                videoElement.style.borderRadius = 'var(--radius-md)';
+                videoElement.setAttribute('aria-label', 'Remixed video');
+
+                // Download Button
+                const downloadLink = document.createElement('a');
+                downloadLink.href = videoUrl;
+                downloadLink.download = `startplatz-ai-remix-${jobId}.mp4`;
+                downloadLink.textContent = '⬇️ Download MP4';
+                downloadLink.className = 'btn-primary';
+                downloadLink.style.marginRight = '10px';
+                
+                // Copy Prompt Button
+                const copyPromptBtn = document.createElement('button');
+                copyPromptBtn.textContent = '📋 Prompt kopieren';
+                copyPromptBtn.className = 'secondary';
+                copyPromptBtn.onclick = () => {
+                    navigator.clipboard.writeText(prompt).then(() => {
+                        log('Remix prompt copied to clipboard.', 'success');
+                    }).catch(err => {
+                        log('Could not copy prompt: ' + err, 'error');
+                    });
+                };
+
+                remixResultContainer.appendChild(videoElement);
+                remixResultContainer.appendChild(document.createElement('br'));
+                remixResultContainer.appendChild(downloadLink);
+                remixResultContainer.appendChild(copyPromptBtn);
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    log('Video remix aborted by user.', 'warning');
+                } else {
+                    log(`Video remix failed: ${error.message || 'See logs for details'}`, 'error');
+                }
+                updateProgressBar(remixProgressBar, remixProgressBarFill, 0);
+            } finally {
+                remixVideoBtn.disabled = false;
+                cancelRemixBtn.disabled = true;
+                remixAbortController = null;
+                if (remixPollingInterval) clearInterval(remixPollingInterval);
+                updateProgressBar(remixProgressBar, remixProgressBarFill, 0);
             }
         }
 
@@ -1693,12 +2339,26 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
             if (imageAbortController) imageAbortController.abort();
         });
 
+        analyzeImageBtn.addEventListener('click', analyzeImage);
+        cancelVisionBtn.addEventListener('click', () => {
+            if (visionAbortController) visionAbortController.abort();
+        });
+
         generateVideoBtn.addEventListener('click', generateVideo);
         cancelVideoBtn.addEventListener('click', () => {
             if (videoAbortController) videoAbortController.abort();
             if (videoPollingInterval) {
                 clearInterval(videoPollingInterval);
                 log('Video polling stopped.', 'warning');
+            }
+        });
+
+        remixVideoBtn.addEventListener('click', generateRemixVideo);
+        cancelRemixBtn.addEventListener('click', () => {
+            if (remixAbortController) remixAbortController.abort();
+            if (remixPollingInterval) {
+                clearInterval(remixPollingInterval);
+                log('Remix polling stopped.', 'warning');
             }
         });
 
