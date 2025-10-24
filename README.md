@@ -1,7 +1,5 @@
 # 🎨 OpenAI Media Generator
 
-**Live Demo:** [Your GitHub Pages URL will be here]
-
 ---
 
 ## 🚀 Schnell-Setup für GitHub Pages
@@ -124,17 +122,6 @@ Deine App ist jetzt live unter:
 - ✅ **Zuverlässig** - 99.9% Uptime
 - ✅ **HTTPS** - Automatisches SSL-Zertifikat
 - ✅ **Custom Domain** - Eigene Domain möglich
-
----
-
-## 🎨 STARTPLATZ Branding
-
-Diese App nutzt das **STARTPLATZ AI HUB** Corporate Design:
-- **Fonts:** Matterhorn
-- **Colors:** Orange (#FF7A00) & Schwarz (#000000)
-- **Style:** Modern, professionell, clean
-
----
 
 ## 📦 Enthaltene Dateien
 
