@@ -12,6 +12,14 @@
 5. `Create repository`
 
 ### 2️⃣ Code hochladen
+
+**⚠️ WICHTIG - Vor dem Upload:**
+Ändere das Standard Admin-Passwort in `index.html` (Zeile ~1463):
+```javascript
+const DEFAULT_ADMIN_PASSWORD = 'admin123'; // ← ÄNDERE DIES!
+```
+
+Dann:
 ```bash
 cd openai-media-generator-github-pages
 git init
@@ -96,6 +104,26 @@ Deine App ist jetzt live unter:
 - Video 8s (sora-2-pro, 720p): $2.40
 - Video 8s (sora-2-pro, 1792p): $4.00
 
+### 🔐 Admin-Panel (NEU!)
+- ✅ **Passwortgeschützt** - Sichere Admin-Authentifizierung
+- ✅ **Feature-Toggles** - Einzelne Features aktivieren/deaktivieren
+- ✅ **🔐 Feature-Passwortschutz** - Jedes Feature mit eigenem Passwort schützen (optional)
+- ✅ **⏰ Öffnungszeiten** - Zeitbasierte Zugriffsbeschränkung (z.B. 08:00-17:00 Uhr)
+- ✅ **🎬 Video-Management** - Alle Videos aus OpenAI API laden & verwalten
+- ✅ **Nutzungsstatistiken** - Tracking von Requests & Kosten
+- ✅ **Custom Nachrichten** - Individuelle Sperrnachrichten
+- ✅ **Log-Export** - Exportiere Logs als Textdatei
+- ✅ **Passwort-Verwaltung** - Sicheres Ändern des Admin-Passworts
+- ✅ **Keyboard Shortcut** - Zugriff via `Ctrl+Shift+A`
+
+**Standard-Passwort:** `admin123` (bitte beim ersten Login ändern!)
+
+**Neu: Feature-Passwortschutz**
+- Jedes Feature (Bilder, Vision, Videos, Remix) kann mit eigenem Passwort geschützt werden
+- Nutzer müssen Passwort eingeben, bevor sie das Feature nutzen können
+- Passwort bleibt für die Session gültig (einmalige Eingabe)
+- Ideal für kostspiele Features wie Video-Generierung!
+
 ### Weitere Features
 - ✅ **Media Gallery** - Historie aller generierten Medien
 - ✅ **Direct API Connection** - Keine Timeouts!
@@ -147,6 +175,131 @@ git push
 ```
 
 GitHub Pages deployt automatisch neu! 🚀
+
+---
+
+## 🔐 Admin-Panel Nutzung
+
+### Zugang
+1. **Button** - Klicke auf das ⚙️ Icon unten rechts
+2. **Shortcut** - Drücke `Ctrl+Shift+A`
+
+### Erste Schritte
+1. **Login** mit Standard-Passwort: `admin123`
+2. **Passwort ändern** - Gehe zu "🔑 Passwort ändern"
+3. **Features steuern** - Toggle Features an/aus
+
+### Feature-Steuerung
+
+**Video-Funktion sperren:**
+1. Admin-Panel öffnen
+2. Bei "🎬 Videoerzeugung" den Toggle ausschalten
+3. Nutzer sehen jetzt eine Sperrnachricht
+
+**Feature mit Passwort schützen:**
+1. Admin-Panel öffnen
+2. Feature aktiviert lassen (Toggle auf ON)
+3. Unter dem Feature erscheinen Passwort-Einstellungen
+4. Checkbox "🔐 Passwortschutz aktivieren" anklicken
+5. Passwort eingeben (min. 4 Zeichen)
+6. "💾 Speichern" klicken
+7. **Nutzer müssen jetzt das Passwort eingeben, bevor sie das Feature nutzen können!**
+
+**Beispiel-Szenario:**
+- Bilder: Für alle frei (kein Passwort)
+- Bildanalyse: Passwortgeschützt mit "vision123"
+- Videos: Passwortgeschützt mit "video456"
+- Remix: Komplett deaktiviert
+
+**Hinweise:**
+- Passwort-Eingabe erfolgt einmalig pro Session
+- Nach korrekter Eingabe bleibt Feature für die Session freigeschaltet
+- Bei neuem Browser-Tab muss Passwort erneut eingegeben werden
+- Admin kann verschiedene Passwörter für jedes Feature setzen
+
+**Custom Nachricht setzen:**
+1. Unter "💬 Sperrnachricht" eigene Nachricht eingeben
+2. "💾 Nachricht speichern" klicken
+3. Diese Nachricht sehen Nutzer bei gesperrten Features (nicht bei passwortgeschützten!)
+
+### Statistiken
+
+Das Admin-Panel zeigt dir:
+- **Anzahl generierter Bilder**
+- **Anzahl Bildanalysen**
+- **Anzahl generierter Videos**
+- **Anzahl Video Remixes**
+- **Gesamt-Kosten** aller Requests
+
+**Statistiken zurücksetzen:**
+- Button "🔄 Statistiken zurücksetzen" klicken
+- Bestätigung erforderlich
+
+### Logs exportieren
+
+1. Button "📥 Logs exportieren" klicken
+2. Textdatei wird heruntergeladen
+3. Enthält alle Log-Einträge mit Timestamps
+
+### ⏰ Öffnungszeiten einrichten
+
+**Aktivieren:**
+1. Admin-Panel öffnen
+2. Unter "⏰ Öffnungszeiten" den Toggle aktivieren
+3. Einstellungen erscheinen automatisch
+
+**Konfigurieren:**
+1. **Start-Zeit** eingeben (z.B. 08:00)
+2. **End-Zeit** eingeben (z.B. 17:00)
+3. **Custom Nachricht** für außerhalb der Zeiten
+4. "💾 Öffnungszeiten speichern" klicken
+
+**Funktion:**
+- App ist NUR während der eingestellten Zeiten nutzbar
+- Außerhalb der Zeiten: Alle Features sind gesperrt
+- Nutzer sehen eine freundliche Nachricht mit den Öffnungszeiten
+
+**Beispiel:**
+```
+🕐 Außerhalb der Öffnungszeiten
+
+Die App ist nur während unserer Öffnungszeiten 
+(08:00 - 17:00 Uhr) verfügbar.
+
+Öffnungszeiten: 08:00 - 17:00 Uhr
+```
+
+### 🎬 Video-Verwaltung
+
+**Videos laden:**
+1. Admin-Panel öffnen
+2. Unter "🎬 Video-Verwaltung" → "🔄 Videos laden"
+3. API Key wird verwendet, um alle Videos zu laden
+
+**Was wird angezeigt:**
+- **Video-ID** - Eindeutige Kennung
+- **Status** - completed, queued, failed
+- **Model** - sora-2 oder sora-2-pro
+- **Dauer & Größe** - z.B. 8s, 1280x720
+- **Prompt** - Erste 100 Zeichen des Prompts
+
+**Aktionen:**
+- **⬇️ Download** - Video direkt herunterladen (nur bei completed)
+- **📋 Copy ID** - Video-ID in Zwischenablage kopieren
+- **↻ Aktualisieren** - Video-Liste neu laden
+
+**Verwendung:**
+- Alle generierten Videos überblicken
+- Videos nachträglich herunterladen
+- Video-IDs für Remix kopieren
+- Status von laufenden Jobs prüfen
+
+### Sicherheit
+
+- **Passwort** wird im LocalStorage gespeichert
+- **Empfehlung**: Passwort sofort beim ersten Login ändern!
+- **Länge**: Mindestens 6 Zeichen
+- **Ändern**: Über "🔑 Passwort ändern" im Admin-Panel
 
 ---
 

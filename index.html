@@ -670,6 +670,166 @@
             color: var(--color-black);
         }
 
+        /* Admin Panel Styles */
+        .admin-panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+            overflow-y: auto;
+        }
+
+        .admin-panel-overlay.active {
+            display: flex;
+        }
+
+        .admin-panel {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(250, 250, 252, 1) 100%);
+            border-radius: var(--radius-2xl);
+            padding: var(--space-2xl);
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--color-primary-lila);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-md);
+            border-bottom: 2px solid rgba(152, 54, 255, 0.2);
+        }
+
+        .admin-section {
+            margin-bottom: var(--space-xl);
+            padding: var(--space-lg);
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .admin-section h3 {
+            font-family: var(--font-primary);
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-md);
+            color: var(--color-primary-lila);
+        }
+
+        .feature-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md);
+            margin-bottom: var(--space-sm);
+            background: white;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            transition: all 0.2s ease;
+        }
+
+        .feature-toggle:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(2px);
+        }
+
+        .feature-toggle.disabled {
+            background: rgba(211, 47, 47, 0.05);
+            border-color: rgba(211, 47, 47, 0.2);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: #ccc;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--color-primary-lila);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-switch.active::after {
+            left: 33px;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .stat-card {
+            background: white;
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--color-primary-teal);
+            margin-bottom: var(--space-xs);
+        }
+
+        .stat-label {
+            font-size: var(--text-sm);
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .admin-fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(152, 54, 255, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+            font-size: 24px;
+            color: white;
+        }
+
+        .admin-fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(152, 54, 255, 0.6);
+        }
+
         /* Video ID Container */
         .video-id-container {
             margin-bottom: var(--space-md);
@@ -1085,6 +1245,237 @@
         </div>
     </div>
 
+    <!-- Admin Panel FAB Button -->
+    <div class="admin-fab" id="adminFab" title="Admin Panel (Ctrl+Shift+A)">
+        ⚙️
+    </div>
+
+    <!-- Admin Panel Overlay -->
+    <div class="admin-panel-overlay" id="adminPanelOverlay">
+        <div class="admin-panel" id="adminPanel" onclick="event.stopPropagation()">
+            <div class="admin-header">
+                <h2>🔐 Admin Panel</h2>
+                <button class="secondary" id="closeAdminBtn">✖ Schließen</button>
+            </div>
+
+            <!-- Password Login (if not authenticated) -->
+            <div id="adminLogin" style="display: none;">
+                <div class="admin-section">
+                    <h3>🔒 Authentifizierung erforderlich</h3>
+                    <div class="form-group">
+                        <label for="adminPassword">Admin-Passwort:</label>
+                        <input type="password" id="adminPassword" placeholder="Passwort eingeben">
+                    </div>
+                    <button class="primary" id="adminLoginBtn">🔓 Anmelden</button>
+                    <div id="loginError" style="margin-top: var(--space-md); color: var(--color-danger); display: none;">
+                        ❌ Falsches Passwort!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Content (if authenticated) -->
+            <div id="adminContent" style="display: none;">
+                
+                <!-- Feature Controls -->
+                <div class="admin-section">
+                    <h3>🎛️ Feature-Steuerung</h3>
+                    <p style="font-size: var(--text-sm); color: rgba(0,0,0,0.6); margin-bottom: var(--space-md);">
+                        Aktiviere/Deaktiviere einzelne Features für alle Nutzer
+                    </p>
+                    
+                    <div class="feature-toggle" id="toggleImageGen">
+                        <div style="flex: 1;">
+                            <strong>🖼️ Bilderzeugung</strong>
+                            <div style="font-size: var(--text-xs); color: rgba(0,0,0,0.5);">gpt-image-1</div>
+                        </div>
+                        <div class="toggle-switch active" data-feature="imageGen"></div>
+                    </div>
+                    <div id="imageGenPassword" style="padding: var(--space-sm) var(--space-md); background: rgba(255,255,255,0.3); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: none;">
+                        <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                            <input type="checkbox" id="imageGenPwEnabled" style="margin: 0;">
+                            <label for="imageGenPwEnabled" style="margin: 0; font-size: var(--text-sm);">🔐 Passwortschutz aktivieren</label>
+                        </div>
+                        <div id="imageGenPwSettings" style="display: none; margin-top: var(--space-sm);">
+                            <input type="password" id="imageGenPwInput" placeholder="Feature-Passwort" style="font-size: var(--text-sm); padding: 8px;">
+                            <button class="secondary" onclick="saveFeaturePassword('imageGen')" style="margin-top: var(--space-xs); font-size: var(--text-sm); padding: 8px 16px;">💾 Speichern</button>
+                        </div>
+                    </div>
+
+                    <div class="feature-toggle" id="toggleVision">
+                        <div style="flex: 1;">
+                            <strong>👁️ Bildanalyse (Vision)</strong>
+                            <div style="font-size: var(--text-xs); color: rgba(0,0,0,0.5);">gpt-4.1-mini</div>
+                        </div>
+                        <div class="toggle-switch active" data-feature="vision"></div>
+                    </div>
+                    <div id="visionPassword" style="padding: var(--space-sm) var(--space-md); background: rgba(255,255,255,0.3); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: none;">
+                        <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                            <input type="checkbox" id="visionPwEnabled" style="margin: 0;">
+                            <label for="visionPwEnabled" style="margin: 0; font-size: var(--text-sm);">🔐 Passwortschutz aktivieren</label>
+                        </div>
+                        <div id="visionPwSettings" style="display: none; margin-top: var(--space-sm);">
+                            <input type="password" id="visionPwInput" placeholder="Feature-Passwort" style="font-size: var(--text-sm); padding: 8px;">
+                            <button class="secondary" onclick="saveFeaturePassword('vision')" style="margin-top: var(--space-xs); font-size: var(--text-sm); padding: 8px 16px;">💾 Speichern</button>
+                        </div>
+                    </div>
+
+                    <div class="feature-toggle" id="toggleVideoGen">
+                        <div style="flex: 1;">
+                            <strong>🎬 Videoerzeugung</strong>
+                            <div style="font-size: var(--text-xs); color: rgba(0,0,0,0.5);">sora-2 / sora-2-pro</div>
+                        </div>
+                        <div class="toggle-switch active" data-feature="videoGen"></div>
+                    </div>
+                    <div id="videoGenPassword" style="padding: var(--space-sm) var(--space-md); background: rgba(255,255,255,0.3); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: none;">
+                        <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                            <input type="checkbox" id="videoGenPwEnabled" style="margin: 0;">
+                            <label for="videoGenPwEnabled" style="margin: 0; font-size: var(--text-sm);">🔐 Passwortschutz aktivieren</label>
+                        </div>
+                        <div id="videoGenPwSettings" style="display: none; margin-top: var(--space-sm);">
+                            <input type="password" id="videoGenPwInput" placeholder="Feature-Passwort" style="font-size: var(--text-sm); padding: 8px;">
+                            <button class="secondary" onclick="saveFeaturePassword('videoGen')" style="margin-top: var(--space-xs); font-size: var(--text-sm); padding: 8px 16px;">💾 Speichern</button>
+                        </div>
+                    </div>
+
+                    <div class="feature-toggle" id="toggleRemix">
+                        <div style="flex: 1;">
+                            <strong>🎞️ Video Remix</strong>
+                            <div style="font-size: var(--text-xs); color: rgba(0,0,0,0.5);">Remix bestehender Videos</div>
+                        </div>
+                        <div class="toggle-switch active" data-feature="remix"></div>
+                    </div>
+                    <div id="remixPassword" style="padding: var(--space-sm) var(--space-md); background: rgba(255,255,255,0.3); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: none;">
+                        <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                            <input type="checkbox" id="remixPwEnabled" style="margin: 0;">
+                            <label for="remixPwEnabled" style="margin: 0; font-size: var(--text-sm);">🔐 Passwortschutz aktivieren</label>
+                        </div>
+                        <div id="remixPwSettings" style="display: none; margin-top: var(--space-sm);">
+                            <input type="password" id="remixPwInput" placeholder="Feature-Passwort" style="font-size: var(--text-sm); padding: 8px;">
+                            <button class="secondary" onclick="saveFeaturePassword('remix')" style="margin-top: var(--space-xs); font-size: var(--text-sm); padding: 8px 16px;">💾 Speichern</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Messages -->
+                <div class="admin-section">
+                    <h3>💬 Sperrnachricht</h3>
+                    <div class="form-group">
+                        <label for="blockMessage">Nachricht für gesperrte Features:</label>
+                        <textarea id="blockMessage" placeholder="Diese Funktion ist vorübergehend deaktiviert. Bitte versuche es später erneut."></textarea>
+                    </div>
+                    <button class="secondary" id="saveMessageBtn">💾 Nachricht speichern</button>
+                </div>
+
+                <!-- Business Hours -->
+                <div class="admin-section">
+                    <h3>⏰ Öffnungszeiten</h3>
+                    <p style="font-size: var(--text-sm); color: rgba(0,0,0,0.6); margin-bottom: var(--space-md);">
+                        Aktiviere/Deaktiviere zeitbasierte Zugriffsbeschränkung
+                    </p>
+                    
+                    <div class="feature-toggle" id="toggleBusinessHours">
+                        <div>
+                            <strong>🕐 Öffnungszeiten aktivieren</strong>
+                            <div style="font-size: var(--text-xs); color: rgba(0,0,0,0.5);">App nur zu bestimmten Zeiten verfügbar</div>
+                        </div>
+                        <div class="toggle-switch" id="businessHoursToggle"></div>
+                    </div>
+
+                    <div id="businessHoursSettings" style="margin-top: var(--space-md); padding: var(--space-md); background: rgba(255,255,255,0.5); border-radius: var(--radius-md); display: none;">
+                        <div class="form-group">
+                            <label for="businessStart">Start-Zeit:</label>
+                            <input type="time" id="businessStart" value="08:00" style="width: auto;">
+                        </div>
+                        <div class="form-group">
+                            <label for="businessEnd">End-Zeit:</label>
+                            <input type="time" id="businessEnd" value="17:00" style="width: auto;">
+                        </div>
+                        <div class="form-group">
+                            <label for="businessMessage">Nachricht außerhalb der Öffnungszeiten:</label>
+                            <textarea id="businessMessage" placeholder="Die App ist nur während unserer Öffnungszeiten verfügbar."></textarea>
+                        </div>
+                        <button class="secondary" id="saveBusinessHoursBtn">💾 Öffnungszeiten speichern</button>
+                    </div>
+                </div>
+
+                <!-- Video Management -->
+                <div class="admin-section">
+                    <h3>🎬 Video-Verwaltung</h3>
+                    <p style="font-size: var(--text-sm); color: rgba(0,0,0,0.6); margin-bottom: var(--space-md);">
+                        Alle generierten Videos aus der OpenAI API laden und verwalten
+                    </p>
+                    
+                    <div class="button-group">
+                        <button class="primary" id="loadVideosBtn">🔄 Videos laden</button>
+                        <button class="secondary" id="refreshVideosBtn" style="display: none;">↻ Aktualisieren</button>
+                    </div>
+
+                    <div id="videosList" style="margin-top: var(--space-md); display: none;">
+                        <div style="padding: var(--space-md); background: rgba(255,255,255,0.5); border-radius: var(--radius-md);">
+                            <div id="videosContent"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="admin-section">
+                    <h3>📊 Nutzungsstatistiken</h3>
+                    <div class="admin-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="statImages">0</div>
+                            <div class="stat-label">Bilder generiert</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statVision">0</div>
+                            <div class="stat-label">Bildanalysen</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statVideos">0</div>
+                            <div class="stat-label">Videos generiert</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statRemix">0</div>
+                            <div class="stat-label">Video Remixes</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statTotalCost">$0.00</div>
+                            <div class="stat-label">Gesamt-Kosten</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Actions -->
+                <div class="admin-section">
+                    <h3>🛠️ Aktionen</h3>
+                    <div class="button-group">
+                        <button class="secondary" id="resetStatsBtn">🔄 Statistiken zurücksetzen</button>
+                        <button class="secondary" id="resetFeatureAuthBtn">🔓 Feature-Passwörter zurücksetzen</button>
+                        <button class="secondary" id="exportLogsBtn">📥 Logs exportieren</button>
+                        <button class="danger" id="changePasswordBtn">🔑 Passwort ändern</button>
+                        <button class="danger" id="logoutAdminBtn">🚪 Abmelden</button>
+                    </div>
+                </div>
+
+                <!-- Password Change Modal -->
+                <div id="passwordChangeModal" style="display: none; margin-top: var(--space-lg); padding: var(--space-lg); background: rgba(255,193,7,0.1); border: 2px solid rgba(255,193,7,0.3); border-radius: var(--radius-lg);">
+                    <h4>🔑 Passwort ändern</h4>
+                    <div class="form-group">
+                        <label for="newPassword">Neues Passwort:</label>
+                        <input type="password" id="newPassword" placeholder="Neues Passwort">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Passwort bestätigen:</label>
+                        <input type="password" id="confirmPassword" placeholder="Passwort wiederholen">
+                    </div>
+                    <div class="button-group">
+                        <button class="primary" id="savePasswordBtn">💾 Speichern</button>
+                        <button class="secondary" id="cancelPasswordBtn">✖ Abbrechen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // ==========================================
         // OpenAI Media Generator - JavaScript Logic
@@ -1159,6 +1550,174 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
         let remixPollingInterval = null;
         let mediaHistory = [];
         let sessionTotalCost = 0;
+
+        // --- Admin Panel State ---
+        const DEFAULT_ADMIN_PASSWORD = 'admin123'; // Change this!
+        let adminState = {
+            isAuthenticated: false,
+            password: localStorage.getItem('adminPassword') || DEFAULT_ADMIN_PASSWORD,
+            features: {
+                imageGen: true,
+                vision: true,
+                videoGen: true,
+                remix: true
+            },
+            featurePasswords: {
+                imageGen: { enabled: false, password: '' },
+                vision: { enabled: false, password: '' },
+                videoGen: { enabled: false, password: '' },
+                remix: { enabled: false, password: '' }
+            },
+            blockMessage: 'Diese Funktion ist vorübergehend deaktiviert. Bitte versuche es später erneut.',
+            businessHours: {
+                enabled: false,
+                start: '08:00',
+                end: '17:00',
+                message: 'Die App ist nur während unserer Öffnungszeiten (08:00 - 17:00 Uhr) verfügbar.'
+            },
+            stats: {
+                images: 0,
+                vision: 0,
+                videos: 0,
+                remix: 0,
+                totalCost: 0
+            }
+        };
+
+        // Track authenticated features in current session
+        let authenticatedFeatures = {
+            imageGen: false,
+            vision: false,
+            videoGen: false,
+            remix: false
+        };
+
+        // Load admin state from localStorage
+        function loadAdminState() {
+            const saved = localStorage.getItem('adminState');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    adminState.features = parsed.features || adminState.features;
+                    adminState.featurePasswords = parsed.featurePasswords || adminState.featurePasswords;
+                    adminState.blockMessage = parsed.blockMessage || adminState.blockMessage;
+                    adminState.businessHours = parsed.businessHours || adminState.businessHours;
+                    adminState.stats = parsed.stats || adminState.stats;
+                } catch (e) {
+                    log('Failed to load admin state', 'warning');
+                }
+            }
+        }
+
+        // Save admin state to localStorage
+        function saveAdminState() {
+            localStorage.setItem('adminState', JSON.stringify({
+                features: adminState.features,
+                featurePasswords: adminState.featurePasswords,
+                blockMessage: adminState.blockMessage,
+                businessHours: adminState.businessHours,
+                stats: adminState.stats
+            }));
+        }
+
+        // Check if feature password is required and authenticated
+        async function checkFeaturePassword(feature, featureName) {
+            // If password protection is not enabled for this feature
+            if (!adminState.featurePasswords[feature].enabled) {
+                return true;
+            }
+
+            // If already authenticated in this session
+            if (authenticatedFeatures[feature]) {
+                return true;
+            }
+
+            // Prompt for password
+            const userPassword = prompt(`🔐 Passwort erforderlich für: ${featureName}\n\nBitte gib das Passwort ein:`);
+            
+            if (!userPassword) {
+                log(`❌ Passwort-Eingabe abgebrochen für ${featureName}`, 'warning');
+                return false;
+            }
+
+            // Check password
+            if (userPassword === adminState.featurePasswords[feature].password) {
+                authenticatedFeatures[feature] = true;
+                log(`✅ ${featureName} erfolgreich freigeschaltet`, 'success');
+                return true;
+            } else {
+                log(`❌ Falsches Passwort für ${featureName}`, 'error');
+                alert('❌ Falsches Passwort!');
+                return false;
+            }
+        }
+
+        // Check if within business hours
+        function isWithinBusinessHours() {
+            if (!adminState.businessHours.enabled) return true;
+            
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            
+            const [startHour, startMin] = adminState.businessHours.start.split(':').map(Number);
+            const [endHour, endMin] = adminState.businessHours.end.split(':').map(Number);
+            
+            const startTime = startHour * 60 + startMin;
+            const endTime = endHour * 60 + endMin;
+            
+            return currentTime >= startTime && currentTime <= endTime;
+        }
+
+        // Show business hours blocked message
+        function showBusinessHoursClosed() {
+            const containers = [imageResultContainer, visionResultContainer, videoResultContainer, remixResultContainer];
+            containers.forEach(container => {
+                container.innerHTML = `
+                    <div style="padding: var(--space-2xl); text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: var(--space-lg);">🕐</div>
+                        <h3 style="color: var(--color-warning); margin-bottom: var(--space-md);">Außerhalb der Öffnungszeiten</h3>
+                        <p style="color: rgba(0,0,0,0.7); margin-bottom: var(--space-lg); font-size: var(--text-lg);">
+                            ${adminState.businessHours.message}
+                        </p>
+                        <p style="color: rgba(0,0,0,0.5); font-size: var(--text-sm);">
+                            Öffnungszeiten: ${adminState.businessHours.start} - ${adminState.businessHours.end} Uhr
+                        </p>
+                    </div>
+                `;
+            });
+        }
+
+        // Check if feature is enabled
+        function isFeatureEnabled(feature) {
+            return adminState.features[feature] === true;
+        }
+
+        // Show feature blocked message
+        function showFeatureBlocked(containerElement, featureName) {
+            containerElement.innerHTML = `
+                <div style="padding: var(--space-2xl); text-align: center;">
+                    <div style="font-size: 64px; margin-bottom: var(--space-lg);">🚫</div>
+                    <h3 style="color: var(--color-danger); margin-bottom: var(--space-md);">Feature deaktiviert</h3>
+                    <p style="color: rgba(0,0,0,0.7); margin-bottom: var(--space-lg); font-size: var(--text-lg);">
+                        ${adminState.blockMessage}
+                    </p>
+                    <p style="color: rgba(0,0,0,0.5); font-size: var(--text-sm);">
+                        Feature: ${featureName}
+                    </p>
+                </div>
+            `;
+        }
+
+        // Update statistics
+        function updateStats(feature, cost = 0) {
+            if (feature === 'imageGen') adminState.stats.images++;
+            else if (feature === 'vision') adminState.stats.vision++;
+            else if (feature === 'videoGen') adminState.stats.videos++;
+            else if (feature === 'remix') adminState.stats.remix++;
+            
+            adminState.stats.totalCost += cost;
+            saveAdminState();
+        }
 
 // --- Utility Functions ---
 
@@ -1544,6 +2103,25 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
         }
 
         async function generateImage() {
+            // Check business hours first
+            if (!isWithinBusinessHours()) {
+                log('🕐 Außerhalb der Öffnungszeiten', 'warning');
+                showBusinessHoursClosed();
+                return;
+            }
+
+            // Check if feature is enabled
+            if (!isFeatureEnabled('imageGen')) {
+                log('⚠️ Bilderzeugung ist derzeit deaktiviert.', 'warning');
+                showFeatureBlocked(imageResultContainer, 'Bilderzeugung');
+                return;
+            }
+
+            // Check feature password
+            if (!await checkFeaturePassword('imageGen', 'Bilderzeugung')) {
+                return;
+            }
+
             const prompt = imagePromptInput.value.trim();
             const size = imageSizeSelect.value;
             const n = parseInt(imageCountSelect.value, 10);
@@ -1590,6 +2168,9 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
                 // Calculate and display costs
                 const imageCost = calculateImageCost(size === 'auto' ? '1024x1024' : size, n);
                 updateCostDisplay(imageCost, `Bild-Generierung: ${n}x ${size || 'auto'} (gpt-image-1)`);
+                
+                // Update stats
+                updateStats('imageGen', imageCost);
 
                 if (data.data && data.data.length > 0) {
                     imageResultContainer.innerHTML = '';
@@ -1687,6 +2268,25 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
         // --- Vision/Image Analysis Logic ---
 
         async function analyzeImage() {
+            // Check business hours first
+            if (!isWithinBusinessHours()) {
+                log('🕐 Außerhalb der Öffnungszeiten', 'warning');
+                showBusinessHoursClosed();
+                return;
+            }
+
+            // Check if feature is enabled
+            if (!isFeatureEnabled('vision')) {
+                log('⚠️ Bildanalyse ist derzeit deaktiviert.', 'warning');
+                showFeatureBlocked(visionResultContainer, 'Bildanalyse (Vision)');
+                return;
+            }
+
+            // Check feature password
+            if (!await checkFeaturePassword('vision', 'Bildanalyse')) {
+                return;
+            }
+
             const prompt = visionPromptInput.value.trim();
             const imageUrl = visionImageUrlInput.value.trim();
             const imageFile = visionImageUploadInput.files[0];
@@ -1787,6 +2387,9 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
                 const completionTokens = usage?.completion_tokens || 0;
                 const visionCost = calculateVisionCost(promptTokens, 0); // API already includes image tokens in prompt_tokens
                 updateCostDisplay(visionCost, `Bildanalyse: ${promptTokens} input + ${completionTokens} output tokens (gpt-4.1-mini)`);
+                
+                // Update stats
+                updateStats('vision', visionCost);
 
                 // Display result
                 visionResultContainer.innerHTML = '';
@@ -1957,6 +2560,25 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
         }
 
         async function generateVideo() {
+            // Check business hours first
+            if (!isWithinBusinessHours()) {
+                log('🕐 Außerhalb der Öffnungszeiten', 'warning');
+                showBusinessHoursClosed();
+                return;
+            }
+
+            // Check if feature is enabled
+            if (!isFeatureEnabled('videoGen')) {
+                log('⚠️ Videoerzeugung ist derzeit deaktiviert.', 'warning');
+                showFeatureBlocked(videoResultContainer, 'Videoerzeugung');
+                return;
+            }
+
+            // Check feature password
+            if (!await checkFeaturePassword('videoGen', 'Videoerzeugung')) {
+                return;
+            }
+
             const prompt = videoPromptInput.value.trim();
             const seconds = videoSecondsInput.value;
             const size = videoSizeSelect.value;
@@ -2035,6 +2657,9 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
                 // Calculate and display costs
                 const videoCost = calculateVideoCost(model, seconds, size);
                 updateCostDisplay(videoCost, `Video-Generierung: ${seconds}s ${size || 'Standard'} (${model})`);
+                
+                // Update stats
+                updateStats('videoGen', videoCost);
 
                 // Add to history
                 addMediaToHistory('video', prompt, videoUrl);
@@ -2144,6 +2769,25 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
         }
 
         async function generateRemixVideo() {
+            // Check business hours first
+            if (!isWithinBusinessHours()) {
+                log('🕐 Außerhalb der Öffnungszeiten', 'warning');
+                showBusinessHoursClosed();
+                return;
+            }
+
+            // Check if feature is enabled
+            if (!isFeatureEnabled('remix')) {
+                log('⚠️ Video Remix ist derzeit deaktiviert.', 'warning');
+                showFeatureBlocked(remixResultContainer, 'Video Remix');
+                return;
+            }
+
+            // Check feature password
+            if (!await checkFeaturePassword('remix', 'Video Remix')) {
+                return;
+            }
+
             const videoId = remixVideoIdInput.value.trim();
             const prompt = remixPromptInput.value.trim();
 
@@ -2216,6 +2860,9 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
                 // Note: We don't know exact model/duration from remix, so we estimate with sora-2 @ 8s
                 const remixCost = calculateVideoCost('sora-2', 8, '720x1280'); // Conservative estimate
                 updateCostDisplay(remixCost, `Video-Remix: ${videoId} → ${jobId} (Geschätzt: sora-2, 8s)`);
+                
+                // Update stats
+                updateStats('remix', remixCost);
 
                 // Add to history
                 addMediaToHistory('video', prompt, videoUrl);
@@ -2367,10 +3014,429 @@ const VIDEO_CONTENT_ENDPOINT = PROXY_ENDPOINT;
             log('Log cleared.', 'info');
         });
 
+        // --- Admin Panel Logic ---
+
+        const adminFab = document.getElementById('adminFab');
+        const adminPanelOverlay = document.getElementById('adminPanelOverlay');
+        const adminPanel = document.getElementById('adminPanel');
+        const closeAdminBtn = document.getElementById('closeAdminBtn');
+        const adminLogin = document.getElementById('adminLogin');
+        const adminContent = document.getElementById('adminContent');
+        const adminPasswordInput = document.getElementById('adminPassword');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const loginError = document.getElementById('loginError');
+
+        // Open admin panel
+        adminFab.addEventListener('click', () => {
+            adminPanelOverlay.classList.add('active');
+            if (adminState.isAuthenticated) {
+                adminLogin.style.display = 'none';
+                adminContent.style.display = 'block';
+                updateAdminUI();
+            } else {
+                adminLogin.style.display = 'block';
+                adminContent.style.display = 'none';
+            }
+        });
+
+        // Close admin panel
+        closeAdminBtn.addEventListener('click', () => {
+            adminPanelOverlay.classList.remove('active');
+        });
+
+        adminPanelOverlay.addEventListener('click', (e) => {
+            if (e.target === adminPanelOverlay) {
+                adminPanelOverlay.classList.remove('active');
+            }
+        });
+
+        // Keyboard shortcut Ctrl+Shift+A
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                e.preventDefault();
+                adminFab.click();
+            }
+        });
+
+        // Admin login
+        adminLoginBtn.addEventListener('click', () => {
+            const password = adminPasswordInput.value;
+            if (password === adminState.password) {
+                adminState.isAuthenticated = true;
+                adminLogin.style.display = 'none';
+                adminContent.style.display = 'block';
+                loginError.style.display = 'none';
+                adminPasswordInput.value = '';
+                updateAdminUI();
+                log('🔓 Admin logged in', 'success');
+            } else {
+                loginError.style.display = 'block';
+            }
+        });
+
+        adminPasswordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                adminLoginBtn.click();
+            }
+        });
+
+        // Feature toggles
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const feature = this.dataset.feature;
+                if (feature) {
+                    adminState.features[feature] = !adminState.features[feature];
+                    saveAdminState();
+                    updateAdminUI();
+                    log(`Feature "${feature}" ${adminState.features[feature] ? 'enabled' : 'disabled'}`, 'info');
+                }
+            });
+        });
+
+        // Feature password checkboxes
+        ['imageGen', 'vision', 'videoGen', 'remix'].forEach(feature => {
+            const checkbox = document.getElementById(`${feature}PwEnabled`);
+            const settings = document.getElementById(`${feature}PwSettings`);
+            
+            checkbox.addEventListener('change', function() {
+                settings.style.display = this.checked ? 'block' : 'none';
+                if (!this.checked) {
+                    // Disable password protection
+                    adminState.featurePasswords[feature].enabled = false;
+                    adminState.featurePasswords[feature].password = '';
+                    saveAdminState();
+                    log(`Passwortschutz für "${feature}" deaktiviert`, 'info');
+                }
+            });
+        });
+
+        // Save feature password function
+        window.saveFeaturePassword = function(feature) {
+            const passwordInput = document.getElementById(`${feature}PwInput`);
+            const password = passwordInput.value.trim();
+            
+            if (!password) {
+                alert('Bitte gib ein Passwort ein!');
+                return;
+            }
+            
+            if (password.length < 4) {
+                alert('Passwort muss mindestens 4 Zeichen lang sein!');
+                return;
+            }
+            
+            adminState.featurePasswords[feature].enabled = true;
+            adminState.featurePasswords[feature].password = password;
+            saveAdminState();
+            
+            // Reset authentication for this feature
+            authenticatedFeatures[feature] = false;
+            
+            log(`🔐 Passwortschutz für "${feature}" gespeichert`, 'success');
+            alert(`✅ Passwortschutz aktiviert!\n\nDas Feature "${feature}" ist jetzt passwortgeschützt.`);
+        };
+
+        // Save block message
+        document.getElementById('saveMessageBtn').addEventListener('click', () => {
+            adminState.blockMessage = document.getElementById('blockMessage').value;
+            saveAdminState();
+            log('💾 Sperrnachricht gespeichert', 'success');
+        });
+
+        // Business Hours Toggle
+        document.getElementById('businessHoursToggle').addEventListener('click', function() {
+            adminState.businessHours.enabled = !adminState.businessHours.enabled;
+            saveAdminState();
+            updateAdminUI();
+            log(`Öffnungszeiten ${adminState.businessHours.enabled ? 'aktiviert' : 'deaktiviert'}`, 'info');
+        });
+
+        // Save business hours settings
+        document.getElementById('saveBusinessHoursBtn').addEventListener('click', () => {
+            adminState.businessHours.start = document.getElementById('businessStart').value;
+            adminState.businessHours.end = document.getElementById('businessEnd').value;
+            adminState.businessHours.message = document.getElementById('businessMessage').value;
+            saveAdminState();
+            log('💾 Öffnungszeiten gespeichert', 'success');
+        });
+
+        // Load videos from OpenAI API
+        document.getElementById('loadVideosBtn').addEventListener('click', async () => {
+            const loadBtn = document.getElementById('loadVideosBtn');
+            const videosContent = document.getElementById('videosContent');
+            const videosList = document.getElementById('videosList');
+            const refreshBtn = document.getElementById('refreshVideosBtn');
+
+            loadBtn.disabled = true;
+            loadBtn.textContent = '⏳ Lade Videos...';
+
+            try {
+                const userApiKey = apiKeyInput.value.trim();
+                if (!userApiKey) {
+                    alert('Bitte gib zuerst deinen OpenAI API Key ein!');
+                    loadBtn.disabled = false;
+                    loadBtn.textContent = '🔄 Videos laden';
+                    return;
+                }
+
+                // List all video jobs from OpenAI API
+                const response = await fetch('https://api.openai.com/v1/videos', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${userApiKey}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                const videos = data.data || [];
+
+                log(`📥 ${videos.length} Videos geladen`, 'success');
+
+                // Display videos
+                videosContent.innerHTML = '';
+                
+                if (videos.length === 0) {
+                    videosContent.innerHTML = '<p style="text-align: center; color: rgba(0,0,0,0.5);">Keine Videos gefunden.</p>';
+                } else {
+                    videos.forEach((video, index) => {
+                        const videoCard = document.createElement('div');
+                        videoCard.style.marginBottom = 'var(--space-md)';
+                        videoCard.style.padding = 'var(--space-md)';
+                        videoCard.style.background = 'white';
+                        videoCard.style.borderRadius = 'var(--radius-md)';
+                        videoCard.style.border = '1px solid rgba(0,0,0,0.06)';
+
+                        const statusColor = video.status === 'completed' ? 'var(--color-success)' :
+                                          video.status === 'failed' ? 'var(--color-danger)' :
+                                          'var(--color-warning)';
+
+                        videoCard.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                                        <strong>🎬 Video ${index + 1}</strong>
+                                        <span style="background: ${statusColor}; color: white; padding: 2px 8px; border-radius: var(--radius-sm); font-size: var(--text-xs);">
+                                            ${video.status}
+                                        </span>
+                                    </div>
+                                    <div style="font-size: var(--text-sm); color: rgba(0,0,0,0.6); margin-bottom: var(--space-xs);">
+                                        <strong>ID:</strong> <code style="font-size: var(--text-xs);">${video.id}</code>
+                                    </div>
+                                    <div style="font-size: var(--text-sm); color: rgba(0,0,0,0.6); margin-bottom: var(--space-xs);">
+                                        <strong>Model:</strong> ${video.model || 'N/A'} | <strong>Dauer:</strong> ${video.seconds || 'N/A'}s | <strong>Größe:</strong> ${video.size || 'N/A'}
+                                    </div>
+                                    ${video.prompt ? `<div style="font-size: var(--text-sm); color: rgba(0,0,0,0.5); margin-top: var(--space-xs);">
+                                        <em>"${video.prompt.substring(0, 100)}${video.prompt.length > 100 ? '...' : ''}"</em>
+                                    </div>` : ''}
+                                </div>
+                                <div style="display: flex; gap: var(--space-xs);">
+                                    ${video.status === 'completed' ? `
+                                        <button class="secondary" onclick="downloadVideoById('${video.id}')" style="font-size: var(--text-sm); padding: 8px 16px;">
+                                            ⬇️ Download
+                                        </button>
+                                    ` : ''}
+                                    <button class="secondary" onclick="copyToClipboard('${video.id}')" style="font-size: var(--text-sm); padding: 8px 16px;">
+                                        📋 Copy ID
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+
+                        videosContent.appendChild(videoCard);
+                    });
+                }
+
+                videosList.style.display = 'block';
+                refreshBtn.style.display = 'inline-block';
+
+            } catch (error) {
+                log(`❌ Fehler beim Laden der Videos: ${error.message}`, 'error');
+                alert(`Fehler beim Laden der Videos:\n${error.message}`);
+            } finally {
+                loadBtn.disabled = false;
+                loadBtn.textContent = '🔄 Videos laden';
+            }
+        });
+
+        // Refresh videos button
+        document.getElementById('refreshVideosBtn').addEventListener('click', () => {
+            document.getElementById('loadVideosBtn').click();
+        });
+
+        // Helper: Download video by ID
+        window.downloadVideoById = async function(videoId) {
+            try {
+                log(`⬇️ Lade Video ${videoId}...`, 'info');
+                const videoBlob = await downloadVideo(videoId);
+                const videoUrl = URL.createObjectURL(videoBlob);
+                
+                const a = document.createElement('a');
+                a.href = videoUrl;
+                a.download = `video-${videoId}.mp4`;
+                a.click();
+                
+                URL.revokeObjectURL(videoUrl);
+                log(`✅ Video ${videoId} heruntergeladen`, 'success');
+            } catch (error) {
+                log(`❌ Fehler beim Download: ${error.message}`, 'error');
+                alert(`Fehler beim Download:\n${error.message}`);
+            }
+        };
+
+        // Helper: Copy to clipboard
+        window.copyToClipboard = function(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                log(`📋 Kopiert: ${text}`, 'success');
+            }).catch(err => {
+                log(`❌ Kopieren fehlgeschlagen: ${err}`, 'error');
+            });
+        };
+
+        // Reset stats
+        document.getElementById('resetStatsBtn').addEventListener('click', () => {
+            if (confirm('Möchtest du wirklich alle Statistiken zurücksetzen?')) {
+                adminState.stats = {
+                    images: 0,
+                    vision: 0,
+                    videos: 0,
+                    remix: 0,
+                    totalCost: 0
+                };
+                saveAdminState();
+                updateAdminUI();
+                log('🔄 Statistiken zurückgesetzt', 'success');
+            }
+        });
+
+        // Reset feature authentications
+        document.getElementById('resetFeatureAuthBtn').addEventListener('click', () => {
+            authenticatedFeatures = {
+                imageGen: false,
+                vision: false,
+                videoGen: false,
+                remix: false
+            };
+            log('🔓 Alle Feature-Authentifizierungen wurden zurückgesetzt', 'success');
+            alert('✅ Feature-Passwörter zurückgesetzt!\n\nNutzer müssen Passwörter erneut eingeben.');
+        });
+
+        // Export logs
+        document.getElementById('exportLogsBtn').addEventListener('click', () => {
+            const logText = logArea.innerText;
+            const blob = new Blob([logText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `logs-${new Date().toISOString()}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            log('📥 Logs exportiert', 'success');
+        });
+
+        // Change password
+        document.getElementById('changePasswordBtn').addEventListener('click', () => {
+            document.getElementById('passwordChangeModal').style.display = 'block';
+        });
+
+        document.getElementById('cancelPasswordBtn').addEventListener('click', () => {
+            document.getElementById('passwordChangeModal').style.display = 'none';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        });
+
+        document.getElementById('savePasswordBtn').addEventListener('click', () => {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword.length < 6) {
+                alert('Passwort muss mindestens 6 Zeichen lang sein!');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('Passwörter stimmen nicht überein!');
+                return;
+            }
+            
+            adminState.password = newPassword;
+            localStorage.setItem('adminPassword', newPassword);
+            document.getElementById('passwordChangeModal').style.display = 'none';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            log('🔑 Passwort geändert', 'success');
+        });
+
+        // Logout
+        document.getElementById('logoutAdminBtn').addEventListener('click', () => {
+            adminState.isAuthenticated = false;
+            adminPanelOverlay.classList.remove('active');
+            log('🚪 Admin abgemeldet', 'info');
+        });
+
+        // Update Admin UI
+        function updateAdminUI() {
+            // Update toggle switches
+            document.querySelectorAll('.toggle-switch').forEach(toggle => {
+                const feature = toggle.dataset.feature;
+                if (feature) {
+                    const isActive = adminState.features[feature];
+                    toggle.classList.toggle('active', isActive);
+                    toggle.parentElement.classList.toggle('disabled', !isActive);
+                    
+                    // Show/hide password settings for enabled features
+                    const passwordContainer = document.getElementById(`${feature}Password`);
+                    if (passwordContainer) {
+                        passwordContainer.style.display = isActive ? 'block' : 'none';
+                    }
+                }
+            });
+
+            // Update feature password settings
+            ['imageGen', 'vision', 'videoGen', 'remix'].forEach(feature => {
+                const checkbox = document.getElementById(`${feature}PwEnabled`);
+                const settings = document.getElementById(`${feature}PwSettings`);
+                const input = document.getElementById(`${feature}PwInput`);
+                
+                if (checkbox && settings && input) {
+                    checkbox.checked = adminState.featurePasswords[feature].enabled;
+                    settings.style.display = adminState.featurePasswords[feature].enabled ? 'block' : 'none';
+                    input.value = adminState.featurePasswords[feature].password;
+                }
+            });
+
+            // Update business hours toggle
+            const businessHoursToggle = document.getElementById('businessHoursToggle');
+            const businessHoursSettings = document.getElementById('businessHoursSettings');
+            businessHoursToggle.classList.toggle('active', adminState.businessHours.enabled);
+            businessHoursSettings.style.display = adminState.businessHours.enabled ? 'block' : 'none';
+
+            // Update business hours inputs
+            document.getElementById('businessStart').value = adminState.businessHours.start;
+            document.getElementById('businessEnd').value = adminState.businessHours.end;
+            document.getElementById('businessMessage').value = adminState.businessHours.message;
+
+            // Update block message
+            document.getElementById('blockMessage').value = adminState.blockMessage;
+
+            // Update statistics
+            document.getElementById('statImages').textContent = adminState.stats.images;
+            document.getElementById('statVision').textContent = adminState.stats.vision;
+            document.getElementById('statVideos').textContent = adminState.stats.videos;
+            document.getElementById('statRemix').textContent = adminState.stats.remix;
+            document.getElementById('statTotalCost').textContent = `$${adminState.stats.totalCost.toFixed(4)}`;
+        }
+
         window.onload = () => {
             loadApiKey();
+            loadAdminState();
             log('🎨 OpenAI Media Generator initialized | STARTPLATZ AI HUB', 'success');
             log('System ready. Start generating images or videos!', 'info');
+            log('💡 Admin-Panel: Klicke auf ⚙️ oder drücke Ctrl+Shift+A', 'info');
         };
     </script>
 </body>
