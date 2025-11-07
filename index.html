@@ -945,277 +945,305 @@
             </small>
         </div>
 
-        <div class="section-group three-col">
-            <!-- Image Generation Section -->
+        <!-- Image Generation Section -->
+        <div class="section-group">
             <div class="card">
-                <h2>🖼️ Bilderzeugung</h2>
-                <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
-                    Model: <code>gpt-image-1</code>
-                </p>
-                
-                <div class="alert alert-warning" role="alert" style="font-size: var(--text-sm);">
-                    <span>ℹ️</span>
-                    <div>
-                        <strong>Hinweis:</strong> Erweiterte Parameter sind derzeit deaktiviert. 
-                        Aktuell funktionieren: <strong>Prompt, Size, Number of Images</strong>.
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="imagePrompt" id="imagePromptLabel">Prompt:</label>
-                    <textarea id="imagePrompt" aria-labelledby="imagePromptLabel" 
-                              placeholder="Ein futuristischer Roboter in einer nebligen Stadt, digital art"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="imageSize" id="imageSizeLabel">Größe:</label>
-                    <select id="imageSize" aria-labelledby="imageSizeLabel">
-                        <option value="auto">Auto (Model entscheidet)</option>
-                        <option value="1024x1024" selected>1024x1024 (Quadrat)</option>
-                        <option value="1536x1024">1536x1024 (Querformat)</option>
-                        <option value="1024x1536">1024x1536 (Hochformat)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="imageCount" id="imageCountLabel">Anzahl Bilder:</label>
-                    <select id="imageCount" aria-labelledby="imageCountLabel">
-                        <option value="1" selected>1 Bild</option>
-                        <option value="2">2 Bilder</option>
-                        <option value="3">3 Bilder</option>
-                        <option value="4">4 Bilder</option>
-                        <option value="5">5 Bilder</option>
-                        <option value="10">10 Bilder (max)</option>
-                    </select>
-                </div>
-                
-                <!-- Erweiterte Parameter - derzeit deaktiviert -->
                 <details>
-                    <summary>🔧 Erweiterte Parameter (derzeit nicht aktiv)</summary>
-                    <div style="opacity: 0.6;">
-                        <p style="font-size: var(--text-sm); margin-bottom: var(--space-md);">
-                            <em>Diese Parameter werden von der aktuellen API-Version möglicherweise nicht unterstützt.</em>
+                    <summary style="cursor: pointer; font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-md); padding: var(--space-md); background: rgba(0,0,0,0.03); border-radius: var(--radius-md); user-select: none;">
+                        🖼️ Bilderzeugung
+                    </summary>
+                    <div style="padding: 0 var(--space-md);">
+                        <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
+                            Model: <code>gpt-image-1</code>
                         </p>
+                        
+                        <div class="alert alert-warning" role="alert" style="font-size: var(--text-sm);">
+                            <span>ℹ️</span>
+                            <div>
+                                <strong>Hinweis:</strong> Erweiterte Parameter sind derzeit deaktiviert. 
+                                Aktuell funktionieren: <strong>Prompt, Size, Number of Images</strong>.
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="imageQuality">Qualität:</label>
-                            <select id="imageQuality" disabled>
-                                <option value="auto" selected>auto</option>
-                                <option value="low">low</option>
-                                <option value="medium">medium</option>
-                                <option value="high">high</option>
+                            <label for="imagePrompt" id="imagePromptLabel">Prompt:</label>
+                            <textarea id="imagePrompt" aria-labelledby="imagePromptLabel" 
+                                      placeholder="Ein futuristischer Roboter in einer nebligen Stadt, digital art"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="imageSize" id="imageSizeLabel">Größe:</label>
+                            <select id="imageSize" aria-labelledby="imageSizeLabel">
+                                <option value="auto">Auto (Model entscheidet)</option>
+                                <option value="1024x1024" selected>1024x1024 (Quadrat)</option>
+                                <option value="1536x1024">1536x1024 (Querformat)</option>
+                                <option value="1024x1536">1024x1536 (Hochformat)</option>
                             </select>
                         </div>
+
                         <div class="form-group">
-                            <label for="imageBackground">Hintergrund:</label>
-                            <select id="imageBackground" disabled>
-                                <option value="auto" selected>auto</option>
-                        <option value="transparent">transparent</option>
-                        <option value="opaque">opaque</option>
-                    </select>
-                </div>
-                        <div class="form-group">
-                            <label for="imageOutputFormat">Output Format:</label>
-                            <select id="imageOutputFormat" disabled>
-                                <option value="png" selected>PNG</option>
-                                <option value="jpeg">JPEG</option>
-                                <option value="webp">WebP</option>
+                            <label for="imageCount" id="imageCountLabel">Anzahl Bilder:</label>
+                            <select id="imageCount" aria-labelledby="imageCountLabel">
+                                <option value="1" selected>1 Bild</option>
+                                <option value="2">2 Bilder</option>
+                                <option value="3">3 Bilder</option>
+                                <option value="4">4 Bilder</option>
+                                <option value="5">5 Bilder</option>
+                                <option value="10">10 Bilder (max)</option>
                             </select>
+                        </div>
+                        
+                        <!-- Erweiterte Parameter - derzeit deaktiviert -->
+                        <details>
+                            <summary>🔧 Erweiterte Parameter (derzeit nicht aktiv)</summary>
+                            <div style="opacity: 0.6;">
+                                <p style="font-size: var(--text-sm); margin-bottom: var(--space-md);">
+                                    <em>Diese Parameter werden von der aktuellen API-Version möglicherweise nicht unterstützt.</em>
+                                </p>
+                                <div class="form-group">
+                                    <label for="imageQuality">Qualität:</label>
+                                    <select id="imageQuality" disabled>
+                                        <option value="auto" selected>auto</option>
+                                        <option value="low">low</option>
+                                        <option value="medium">medium</option>
+                                        <option value="high">high</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="imageBackground">Hintergrund:</label>
+                                    <select id="imageBackground" disabled>
+                                        <option value="auto" selected>auto</option>
+                                        <option value="transparent">transparent</option>
+                                        <option value="opaque">opaque</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="imageOutputFormat">Output Format:</label>
+                                    <select id="imageOutputFormat" disabled>
+                                        <option value="png" selected>PNG</option>
+                                        <option value="jpeg">JPEG</option>
+                                        <option value="webp">WebP</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </details>
+
+                        <div class="button-group">
+                            <button class="primary" id="generateImageBtn" aria-controls="imageResultContainer">
+                                🎨 Bild generieren
+                            </button>
+                            <button class="danger" id="cancelImageBtn" disabled aria-controls="imageResultContainer">
+                                ✖ Abbrechen
+                            </button>
+                        </div>
+
+                        <div class="progress-bar" id="imageProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+
+                        <div class="result-container" id="imageResultContainer">
+                            <!-- Image result will be displayed here -->
                         </div>
                     </div>
                 </details>
-
-                <div class="button-group">
-                    <button class="primary" id="generateImageBtn" aria-controls="imageResultContainer">
-                        🎨 Bild generieren
-                    </button>
-                    <button class="danger" id="cancelImageBtn" disabled aria-controls="imageResultContainer">
-                        ✖ Abbrechen
-                    </button>
-                </div>
-
-                <div class="progress-bar" id="imageProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar-fill"></div>
-                </div>
-
-                <div class="result-container" id="imageResultContainer">
-                    <!-- Image result will be displayed here -->
-                </div>
-            </div>
-
-            <!-- Vision/Image Analysis Section -->
-            <div class="card">
-                <h2>👁️ Bildanalyse (Vision)</h2>
-                <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
-                    Model: <code>gpt-4.1-mini</code>
-                </p>
-
-                <div class="form-group">
-                    <label for="visionPrompt" id="visionPromptLabel">Frage zum Bild:</label>
-                    <textarea id="visionPrompt" aria-labelledby="visionPromptLabel" 
-                              placeholder="Was ist auf diesem Bild zu sehen?"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="visionImageUrl" id="visionImageUrlLabel">Bild-URL:</label>
-                    <input type="text" id="visionImageUrl" aria-labelledby="visionImageUrlLabel" 
-                           placeholder="https://example.com/image.jpg">
-                </div>
-
-                <div style="text-align: center; margin: var(--space-md) 0; color: rgba(0,0,0,0.5);">- ODER -</div>
-
-                <div class="form-group">
-                    <label for="visionImageUpload" id="visionImageUploadLabel">Bild hochladen:</label>
-                    <input type="file" id="visionImageUpload" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" 
-                           style="padding: 10px; cursor: pointer;">
-                </div>
-
-                <div class="form-group">
-                    <label for="visionDetail" id="visionDetailLabel">Detail-Level:</label>
-                    <select id="visionDetail" aria-labelledby="visionDetailLabel">
-                        <option value="auto" selected>Auto (Model entscheidet)</option>
-                        <option value="low">Low (schneller, weniger Tokens)</option>
-                        <option value="high">High (detaillierter)</option>
-                    </select>
-                </div>
-
-                <div class="button-group">
-                    <button class="primary" id="analyzeImageBtn" aria-controls="visionResultContainer">
-                        👁️ Bild analysieren
-                    </button>
-                    <button class="danger" id="cancelVisionBtn" disabled aria-controls="visionResultContainer">
-                        ✖ Abbrechen
-                    </button>
-                </div>
-
-                <div class="progress-bar" id="visionProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar-fill"></div>
-                </div>
-
-                <div class="result-container" id="visionResultContainer">
-                    <!-- Vision result will be displayed here -->
-                </div>
             </div>
         </div>
 
+        <!-- Vision/Image Analysis Section -->
         <div class="section-group">
-            <!-- Video Generation Section -->
             <div class="card">
-                <h2>🎬 Videoerzeugung</h2>
-                <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
-                    Models: <code>sora-2</code> | <code>sora-2-pro</code>
-                </p>
+                <details>
+                    <summary style="cursor: pointer; font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-md); padding: var(--space-md); background: rgba(0,0,0,0.03); border-radius: var(--radius-md); user-select: none;">
+                        👁️ Bildanalyse (Vision)
+                    </summary>
+                    <div style="padding: 0 var(--space-md);">
+                        <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
+                            Model: <code>gpt-4.1-mini</code>
+                        </p>
 
-                <div class="form-group">
-                    <label for="videoPrompt" id="videoPromptLabel">Prompt:</label>
-                    <textarea id="videoPrompt" aria-labelledby="videoPromptLabel" 
-                              placeholder="Ein kurzer Clip einer Katze, die auf einem Skateboard durch New York City fährt."></textarea>
-                </div>
+                        <div class="form-group">
+                            <label for="visionPrompt" id="visionPromptLabel">Frage zum Bild:</label>
+                            <textarea id="visionPrompt" aria-labelledby="visionPromptLabel" 
+                                      placeholder="Was ist auf diesem Bild zu sehen?"></textarea>
+                        </div>
 
-                <div class="form-group">
-                    <label for="videoInputReference" id="videoInputReferenceLabel" style="opacity: 0.5;">
-                        Input Referenz-Bild (Noch nicht verfügbar):
-                    </label>
-                    <input type="file" id="videoInputReference" accept="image/png,image/jpeg,image/jpg,image/webp" 
-                           style="padding: 10px; cursor: not-allowed; opacity: 0.5;" disabled>
-                    <div style="display: block; margin-top: var(--space-md); padding: var(--space-md); background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: var(--radius-md);">
-                        <div style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.7);">
-                            <strong>🚧 Feature in Entwicklung</strong><br>
-                            Das <code>input_reference</code> Feature ist noch nicht über die OpenAI API verfügbar. 
-                            Sobald es offiziell unterstützt wird, wird es hier aktiviert.
+                        <div class="form-group">
+                            <label for="visionImageUrl" id="visionImageUrlLabel">Bild-URL:</label>
+                            <input type="text" id="visionImageUrl" aria-labelledby="visionImageUrlLabel" 
+                                   placeholder="https://example.com/image.jpg">
+                        </div>
+
+                        <div style="text-align: center; margin: var(--space-md) 0; color: rgba(0,0,0,0.5);">- ODER -</div>
+
+                        <div class="form-group">
+                            <label for="visionImageUpload" id="visionImageUploadLabel">Bild hochladen:</label>
+                            <input type="file" id="visionImageUpload" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" 
+                                   style="padding: 10px; cursor: pointer;">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="visionDetail" id="visionDetailLabel">Detail-Level:</label>
+                            <select id="visionDetail" aria-labelledby="visionDetailLabel">
+                                <option value="auto" selected>Auto (Model entscheidet)</option>
+                                <option value="low">Low (schneller, weniger Tokens)</option>
+                                <option value="high">High (detaillierter)</option>
+                            </select>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="primary" id="analyzeImageBtn" aria-controls="visionResultContainer">
+                                👁️ Bild analysieren
+                            </button>
+                            <button class="danger" id="cancelVisionBtn" disabled aria-controls="visionResultContainer">
+                                ✖ Abbrechen
+                            </button>
+                        </div>
+
+                        <div class="progress-bar" id="visionProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+
+                        <div class="result-container" id="visionResultContainer">
+                            <!-- Vision result will be displayed here -->
                         </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="videoSeconds" id="videoSecondsLabel">Dauer (Sekunden):</label>
-                    <select id="videoSeconds" aria-labelledby="videoSecondsLabel">
-                        <option value="4">4 Sekunden</option>
-                        <option value="8" selected>8 Sekunden</option>
-                        <option value="12">12 Sekunden</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="videoSize" id="videoSizeLabel">Auflösung:</label>
-                    <select id="videoSize" aria-labelledby="videoSizeLabel">
-                        <option value="">Standard (720x1280/1280x720)</option>
-                        <option value="1280x720">1280x720 (Landscape HD - 16:9)</option>
-                        <option value="720x1280">720x1280 (Portrait HD - 9:16)</option>
-                        <option value="1792x1024">1792x1024 (Landscape High-Res - nur sora-2-pro)</option>
-                        <option value="1024x1792">1024x1792 (Portrait High-Res - nur sora-2-pro)</option>
-                    </select>
-                    <small style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
-                        💰 <strong>Preise:</strong> 720p = Standard-Preis | 1792/1024 = +66% (nur sora-2-pro)
-                    </small>
-                </div>
-
-                <div class="form-group">
-                    <label for="videoModel" id="videoModelLabel">Model:</label>
-                    <select id="videoModel" aria-labelledby="videoModelLabel">
-                        <option value="sora-2" selected>sora-2 ($0.10/Sekunde - 720p)</option>
-                        <option value="sora-2-pro">sora-2-pro ($0.30/Sekunde - 720p | $0.50/Sekunde - 1024p/1792p)</option>
-                    </select>
-                    <small style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
-                        💡 <strong>Tipp:</strong> sora-2 für schnelle Previews, sora-2-pro für finales Material
-                    </small>
-                </div>
-
-                <div class="button-group">
-                    <button class="primary" id="generateVideoBtn" aria-controls="videoResultContainer">
-                        🎬 Video generieren
-                    </button>
-                    <button class="danger" id="cancelVideoBtn" disabled aria-controls="videoResultContainer">
-                        ✖ Abbrechen
-                    </button>
-                </div>
-
-                <div class="progress-bar" id="videoProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar-fill">0%</div>
-                </div>
-
-                <div class="result-container" id="videoResultContainer">
-                    <!-- Video result will be displayed here -->
-                </div>
+                </details>
             </div>
+        </div>
 
-            <!-- Video Remix Section -->
+        <!-- Video Generation Section -->
+        <div class="section-group">
             <div class="card">
-                <h2>🎞️ Video Remix</h2>
-                <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
-                    Remixe ein bereits generiertes Video mit neuem Prompt
-                </p>
+                <details>
+                    <summary style="cursor: pointer; font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-md); padding: var(--space-md); background: rgba(0,0,0,0.03); border-radius: var(--radius-md); user-select: none;">
+                        🎬 Videoerzeugung
+                    </summary>
+                    <div style="padding: 0 var(--space-md);">
+                        <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
+                            Models: <code>sora-2</code> | <code>sora-2-pro</code>
+                        </p>
 
-                <div class="form-group">
-                    <label for="remixVideoId" id="remixVideoIdLabel">Video ID:</label>
-                    <input type="text" id="remixVideoId" aria-labelledby="remixVideoIdLabel" 
-                           placeholder="video_123">
-                    <small style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
-                        Die ID des Videos, das du remixen möchtest (findest du in der Video-Generierungs-Antwort).
-                    </small>
-                </div>
+                        <div class="form-group">
+                            <label for="videoPrompt" id="videoPromptLabel">Prompt:</label>
+                            <textarea id="videoPrompt" aria-labelledby="videoPromptLabel" 
+                                      placeholder="Ein kurzer Clip einer Katze, die auf einem Skateboard durch New York City fährt."></textarea>
+                        </div>
 
-                <div class="form-group">
-                    <label for="remixPrompt" id="remixPromptLabel">Remix Prompt:</label>
-                    <textarea id="remixPrompt" aria-labelledby="remixPromptLabel" 
-                              placeholder="Erweitere die Szene, indem die Katze eine Verbeugung vor dem jubelnden Publikum macht"></textarea>
-                </div>
+                        <div class="form-group">
+                            <label for="videoInputReference" id="videoInputReferenceLabel" style="opacity: 0.5;">
+                                Input Referenz-Bild (Noch nicht verfügbar):
+                            </label>
+                            <input type="file" id="videoInputReference" accept="image/png,image/jpeg,image/jpg,image/webp" 
+                                   style="padding: 10px; cursor: not-allowed; opacity: 0.5;" disabled>
+                            <div style="display: block; margin-top: var(--space-md); padding: var(--space-md); background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: var(--radius-md);">
+                                <div style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.7);">
+                                    <strong>🚧 Feature in Entwicklung</strong><br>
+                                    Das <code>input_reference</code> Feature ist noch nicht über die OpenAI API verfügbar. 
+                                    Sobald es offiziell unterstützt wird, wird es hier aktiviert.
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="button-group">
-                    <button class="primary" id="remixVideoBtn" aria-controls="remixResultContainer">
-                        🎞️ Video remixen
-                    </button>
-                    <button class="danger" id="cancelRemixBtn" disabled aria-controls="remixResultContainer">
-                        ✖ Abbrechen
-                    </button>
-                </div>
+                        <div class="form-group">
+                            <label for="videoSeconds" id="videoSecondsLabel">Dauer (Sekunden):</label>
+                            <select id="videoSeconds" aria-labelledby="videoSecondsLabel">
+                                <option value="4">4 Sekunden</option>
+                                <option value="8" selected>8 Sekunden</option>
+                                <option value="12">12 Sekunden</option>
+                            </select>
+                        </div>
 
-                <div class="progress-bar" id="remixProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar-fill">0%</div>
-                </div>
+                        <div class="form-group">
+                            <label for="videoSize" id="videoSizeLabel">Auflösung:</label>
+                            <select id="videoSize" aria-labelledby="videoSizeLabel">
+                                <option value="">Standard (720x1280/1280x720)</option>
+                                <option value="1280x720">1280x720 (Landscape HD - 16:9)</option>
+                                <option value="720x1280">720x1280 (Portrait HD - 9:16)</option>
+                                <option value="1792x1024">1792x1024 (Landscape High-Res - nur sora-2-pro)</option>
+                                <option value="1024x1792">1024x1792 (Portrait High-Res - nur sora-2-pro)</option>
+                            </select>
+                            <small style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
+                                💰 <strong>Preise:</strong> 720p = Standard-Preis | 1792/1024 = +66% (nur sora-2-pro)
+                            </small>
+                        </div>
 
-                <div class="result-container" id="remixResultContainer">
-                    <!-- Remix result will be displayed here -->
-                </div>
+                        <div class="form-group">
+                            <label for="videoModel" id="videoModelLabel">Model:</label>
+                            <select id="videoModel" aria-labelledby="videoModelLabel">
+                                <option value="sora-2" selected>sora-2 ($0.10/Sekunde - 720p)</option>
+                                <option value="sora-2-pro">sora-2-pro ($0.30/Sekunde - 720p | $0.50/Sekunde - 1024p/1792p)</option>
+                            </select>
+                            <small style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
+                                💡 <strong>Tipp:</strong> sora-2 für schnelle Previews, sora-2-pro für finales Material
+                            </small>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="primary" id="generateVideoBtn" aria-controls="videoResultContainer">
+                                🎬 Video generieren
+                            </button>
+                            <button class="danger" id="cancelVideoBtn" disabled aria-controls="videoResultContainer">
+                                ✖ Abbrechen
+                            </button>
+                        </div>
+
+                        <div class="progress-bar" id="videoProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar-fill">0%</div>
+                        </div>
+
+                        <div class="result-container" id="videoResultContainer">
+                            <!-- Video result will be displayed here -->
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- Video Remix Section -->
+        <div class="section-group">
+            <div class="card">
+                <details>
+                    <summary style="cursor: pointer; font-size: 1.5rem; font-weight: 600; margin-bottom: var(--space-md); padding: var(--space-md); background: rgba(0,0,0,0.03); border-radius: var(--radius-md); user-select: none;">
+                        🎞️ Video Remix
+                    </summary>
+                    <div style="padding: 0 var(--space-md);">
+                        <p style="font-size: var(--text-sm); color: rgba(0, 0, 0, 0.6); margin-bottom: var(--space-lg);">
+                            Remixe ein bereits generiertes Video mit neuem Prompt
+                        </p>
+
+                        <div class="form-group">
+                            <label for="remixVideoId" id="remixVideoIdLabel">Video ID:</label>
+                            <input type="text" id="remixVideoId" aria-labelledby="remixVideoIdLabel" 
+                                   placeholder="video_123">
+                            <small style="display: block; margin-top: var(--space-xs); color: rgba(0, 0, 0, 0.6); font-size: var(--text-sm);">
+                                Die ID des Videos, das du remixen möchtest (findest du in der Video-Generierungs-Antwort).
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="remixPrompt" id="remixPromptLabel">Remix Prompt:</label>
+                            <textarea id="remixPrompt" aria-labelledby="remixPromptLabel" 
+                                      placeholder="Erweitere die Szene, indem die Katze eine Verbeugung vor dem jubelnden Publikum macht"></textarea>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="primary" id="remixVideoBtn" aria-controls="remixResultContainer">
+                                🎞️ Video remixen
+                            </button>
+                            <button class="danger" id="cancelRemixBtn" disabled aria-controls="remixResultContainer">
+                                ✖ Abbrechen
+                            </button>
+                        </div>
+
+                        <div class="progress-bar" id="remixProgressBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar-fill">0%</div>
+                        </div>
+
+                        <div class="result-container" id="remixResultContainer">
+                            <!-- Remix result will be displayed here -->
+                        </div>
+                    </div>
+                </details>
             </div>
         </div>
 
